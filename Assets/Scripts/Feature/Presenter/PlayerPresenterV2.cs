@@ -7,7 +7,7 @@ using UniRx;
 using UnityEngine;
 using VContainer;
 
-namespace Feature.Presenters
+namespace Feature.Presenter
 {
     public class PlayerPresenterV2: IPlayerPresenter
     {

@@ -10,7 +10,7 @@ using VContainer;
 
 #endregion
 
-namespace Feature.Presenters
+namespace Feature.Presenter
 {
     /// <summary>
     ///     外部からの入力を受け取り、Modelに通知、Viewに反映する
