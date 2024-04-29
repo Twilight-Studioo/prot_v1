@@ -2,10 +2,9 @@
 #profile:
 #  name: qodana.starter
 #ide: QDNET
-#dotnet:
-#  solution: prot_v1.sln
+
 
 ide: QDNET
 version: 1.0
 profile:
-  path: profile.yaml
+  name: qodana.recommended
