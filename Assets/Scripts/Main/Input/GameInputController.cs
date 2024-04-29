@@ -74,8 +74,8 @@ namespace Main.Input
         {
             jumpAction = inputActionAccessor.CreateAction(Game.Jump);
 
-            Observable.EveryUpdate()
-                .Where(_ => IsJump())
+            Observable
+                .Where<long>(Observable.EveryUpdate(), _ => IsJump())
                 .Subscribe(_ =>
                 {
                     if (gameState.GetState == GameState.State.Playing)
@@ -92,8 +92,8 @@ namespace Main.Input
             moveAction = inputActionAccessor.CreateAction(Game.Move);
 
             // UniRxのEveryUpdateを使って入力を受け取る
-            Observable.EveryUpdate()
-                .Where(_ => CanMove())
+            Observable
+                .Where<long>(Observable.EveryUpdate(), _ => CanMove())
                 .Subscribe(_ =>
                 {
                     playerPresenter.OnMove(moveAction.ReadValue<Vector2>());

@@ -1,4 +1,4 @@
-namespace Feature.Interface.Presenters
+namespace Feature.Interface.Presenter
 {
     public interface IEnemyPresenter
     {

@@ -10,7 +10,7 @@ using VContainer.Unity;
 
 #endregion
 
-namespace Main
+namespace Main.Controller
 {
     /// <summary>
     ///     Game Scene全体を管理するクラス

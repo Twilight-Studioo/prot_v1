@@ -2,7 +2,7 @@ using Feature.Model;
 using Feature.Views;
 using VContainer;
 
-namespace Feature.Presenters
+namespace Feature.Presenter
 {
     public class GameUIPresenter
     {
