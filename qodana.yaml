@@ -7,6 +7,5 @@
 
 ide: QDNET
 version: 1.0
-bootstrap: sh ./bootstrap.sh
 profile:
   path: profile.yaml
