@@ -6,14 +6,7 @@ on:
     branches: # Specify your branches here
       - main # The 'main' branch
       - 'releases/*' # The release branches
-
-jobs:
-  lint:
-    name: Quality Check
-    runs-on: ubuntu-latest
-    steps:
-      
-          
+  
   qodana:
     runs-on: ubuntu-latest
     permissions:
