@@ -1,4 +1,4 @@
-namespace Interfaces
+namespace Feature.Interface
 {
     public interface ISceneDataModel
     {

@@ -6,7 +6,7 @@ using VContainer;
 
 #endregion
 
-namespace Feature.Models
+namespace Feature.Model
 {
     /// <summary>
     ///     プレイヤーの状態を管理するクラス

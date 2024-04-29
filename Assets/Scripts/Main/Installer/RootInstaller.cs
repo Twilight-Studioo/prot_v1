@@ -1,6 +1,7 @@
 #region
 
 using Core.Input;
+using Feature.Common;
 using Feature.Repository;
 using VContainer;
 using VContainer.Unity;

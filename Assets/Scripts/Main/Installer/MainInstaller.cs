@@ -1,10 +1,10 @@
 #region
 
-using Feature.Common;
-using Feature.Models;
+using Feature.Common.State;
+using Feature.Interface.Presenter;
+using Feature.Model;
 using Feature.Presenters;
 using Feature.Views;
-using Interfaces.Presenters;
 using Main.Input;
 using VContainer;
 using VContainer.Unity;

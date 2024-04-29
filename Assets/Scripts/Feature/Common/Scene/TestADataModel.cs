@@ -1,4 +1,4 @@
-using Interfaces;
+using Feature.Interface;
 
 namespace Feature.Common.Scene
 {

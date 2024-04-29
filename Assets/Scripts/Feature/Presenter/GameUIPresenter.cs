@@ -1,7 +1,6 @@
-using Feature.Models;
+using Feature.Model;
 using Feature.Views;
 using VContainer;
-using VContainer.Unity;
 
 namespace Feature.Presenters
 {

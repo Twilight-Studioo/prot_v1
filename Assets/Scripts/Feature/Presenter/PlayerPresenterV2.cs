@@ -1,8 +1,8 @@
 using Core.Utilities;
-using Feature.Common;
-using Feature.Models;
+using Feature.Common.State;
+using Feature.Interface.Presenter;
+using Feature.Model;
 using Feature.Views;
-using Interfaces.Presenters;
 using UniRx;
 using UnityEngine;
 using VContainer;

@@ -25,6 +25,23 @@ namespace Core.Utilities
 
             return value;
         }
+        
+        public static bool IsNull<T>(this T item) where T : class
+        {
+            if (item is null)
+            {
+                return true;
+            }
+
+            // UnityObjectの場合、特別なnullチェックが必要
+            if (item is UnityEngine.Object unityObject)
+            {
+                return unityObject == null;
+            }
+
+            // IComparable<T>を実装していない場合は、デフォルトのnullチェック
+            return item.Equals(null);
+        }
 
         public static T CoerceAtLeast<T>(T value, T min) where T : IComparable<T> =>
             value.CompareTo(min) < 0 ? min : value;

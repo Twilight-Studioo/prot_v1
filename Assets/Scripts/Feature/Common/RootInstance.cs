@@ -1,11 +1,11 @@
 #region
 
-using Interfaces;
+using Feature.Interface;
 using VContainer;
 
 #endregion
 
-namespace Main
+namespace Feature.Common
 {
     public class RootInstance
     {

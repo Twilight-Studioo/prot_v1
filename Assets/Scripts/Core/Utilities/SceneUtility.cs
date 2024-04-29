@@ -16,7 +16,7 @@ namespace Core.Utilities
         private const string ClassName = "SceneLoaderFeatures";
 
         private const string RequiredNamespace =
-            "using System;\nusing Interfaces;\nusing Main;\nusing Unity.VisualScripting;\nusing UnityEngine;\nusing UnityEngine.SceneManagement;\n\n";
+            "using Feature.Interfaces;\nusing Unity.VisualScripting;\nusing UnityEngine.SceneManagement;\n\n";
 
         private const string SceneEnumClassName = "Scene";
         private const string SceneLoaderClassName = "SceneLoader";

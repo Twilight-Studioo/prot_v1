@@ -1,7 +1,7 @@
 #region
 
 using System;
-using Unity.VisualScripting;
+using Core.Utilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,7 +18,7 @@ namespace Core.Input
 
         private void Awake()
         {
-            if (inputActionAsset.IsUnityNull())
+            if (inputActionAsset.IsNull())
             {
                 throw new NotImplementedException("InputActionAsset is not set.");
             }

@@ -1,4 +1,4 @@
-namespace Feature.Common
+namespace Feature.Common.State
 {
     public class GameState
     {

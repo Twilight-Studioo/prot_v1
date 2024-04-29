@@ -1,10 +1,9 @@
 #region
 
 using Feature.Common;
-using Feature.Common.Scene;
-using Feature.Common.Scene.Generated;
+using Feature.Common.State;
+using Feature.Interface.Presenter;
 using Feature.Repository;
-using Interfaces.Presenters;
 using Main.Input;
 using VContainer;
 using VContainer.Unity;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 #endregion
 
-namespace Interfaces.Presenters
+namespace Feature.Interface.Presenter
 {
     public interface IPlayerPresenter
     {
