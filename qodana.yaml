@@ -1,0 +1,12 @@
+#version: "1.0"
+#profile:
+#  name: qodana.starter
+#ide: QDNET
+#dotnet:
+#  solution: prot_v1.sln
+
+ide: QDNET
+version: 1.0
+bootstrap: sh ./bootstrap.sh
+profile:
+  path: profile.yaml
