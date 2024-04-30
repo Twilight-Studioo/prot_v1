@@ -18,7 +18,6 @@ namespace Main.Installer
     {
         protected override void Configure(IContainerBuilder builder)
         {
-
             builder.RegisterComponentInHierarchy<PlayerView>();
             builder.Register<PlayerModel>(Lifetime.Scoped);
             builder.Register<IPlayerPresenter, PlayerPresenter>(Lifetime.Scoped)
@@ -36,7 +35,7 @@ namespace Main.Installer
 
             builder.RegisterComponentInHierarchy<GameUIView>();
             builder.Register<GameUIPresenter>(Lifetime.Scoped);
-            
+
             builder.RegisterEntryPoint<GameController>(Lifetime.Scoped);
         }
     }

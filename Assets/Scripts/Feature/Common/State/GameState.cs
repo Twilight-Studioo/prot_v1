@@ -1,5 +1,8 @@
+#region
+
 using UniRx;
-using UnityEngine;
+
+#endregion
 
 namespace Feature.Common.State
 {
@@ -15,7 +18,7 @@ namespace Feature.Common.State
 
             // in game
             Playing,
-            
+
             // スワップ操作中
             Swapped,
 
@@ -28,8 +31,8 @@ namespace Feature.Common.State
             // 終了
             Finished,
         }
-        
-        
+
+
         public IReactiveProperty<State> CurrentState { get; } = new ReactiveProperty<State>(State.None);
 
 
@@ -47,11 +50,12 @@ namespace Feature.Common.State
         {
             CurrentState.Value = State.Paused;
         }
-        
+
         public void Swap()
         {
             CurrentState.Value = State.Swapped;
         }
+
         public void EndSwap()
         {
             CurrentState.Value = State.Playing;

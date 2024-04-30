@@ -59,13 +59,11 @@ namespace Feature.Presenter
         {
             playerView.Position
                 .DistinctUntilChanged()
-                .Subscribe(x =>
-                {
-                    playerModel.SetPosition(x);
-                });
+                .Subscribe(x => { playerModel.SetPosition(x); });
         }
 
         public Vector2 GetPosition() => playerModel.Position.Value;
+
         public void SetPosition(Vector2 position)
         {
             playerView.SetPosition(position);

@@ -21,7 +21,7 @@ namespace Feature.Model
         {
             Speed = characterParams.Speed;
             JumpPower = characterParams.JumpPower;
-            
+
             Health = new ReactiveProperty<ushort>(100);
             StayGround = new ReactiveProperty<bool>(true);
             IsDead = Health.Select(x => x <= 0).ToReadOnlyReactiveProperty();

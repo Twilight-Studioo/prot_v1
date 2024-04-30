@@ -1,7 +1,6 @@
 #region
 
 using System;
-using Core.Utilities;
 using UniRx;
 using UnityEngine;
 
@@ -16,18 +15,18 @@ namespace Feature.Views
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerView : MonoBehaviour
     {
+        private Vector2 pendingForce = Vector2.zero;
+
+        //    private Vector2? pendingPosition = null;
+        private Vector2? pendingVelocity;
         private Rigidbody2D rigidBody2d;
 
         public IReactiveProperty<Vector2> Position { get; private set; }
-        
-        private Vector2 pendingForce = Vector2.zero;
-    //    private Vector2? pendingPosition = null;
-        private Vector2? pendingVelocity = null;
 
         private void Awake()
         {
             rigidBody2d = GetComponent<Rigidbody2D>();
-            this.Position = new ReactiveProperty<Vector2>(this.transform.position);
+            Position = new ReactiveProperty<Vector2>(transform.position);
         }
 
         private void FixedUpdate()
@@ -41,7 +40,7 @@ namespace Feature.Views
 
             if (pendingVelocity.HasValue)
             {
-                rigidBody2d.velocity = new Vector2(pendingVelocity.Value.x, rigidBody2d.velocity.y);
+                rigidBody2d.velocity = new(pendingVelocity.Value.x, rigidBody2d.velocity.y);
                 pendingVelocity = null;
             }
 
@@ -50,7 +49,7 @@ namespace Feature.Views
             //     rigidBody2d.MovePosition(pendingPosition.Value);
             //     pendingPosition = null;
             // }
-            this.Position.Value = this.transform.position;
+            Position.Value = transform.position;
         }
 
         private void OnCollisionEnter2D(Collision2D other)

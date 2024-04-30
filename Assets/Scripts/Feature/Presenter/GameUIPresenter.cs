@@ -1,8 +1,11 @@
+#region
+
 using Feature.Model;
 using Feature.Views;
 using UniRx;
-using UnityEngine;
 using VContainer;
+
+#endregion
 
 namespace Feature.Presenter
 {
@@ -10,6 +13,7 @@ namespace Feature.Presenter
     {
         private readonly GameUIView gameUIView;
         private readonly PlayerModel playerModel;
+
         [Inject]
         public GameUIPresenter(
             PlayerModel playerModel,

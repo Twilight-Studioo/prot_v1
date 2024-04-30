@@ -1,6 +1,10 @@
+#region
+
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
+#endregion
 
 namespace Feature.Model
 {
@@ -9,44 +13,45 @@ namespace Feature.Model
         public int Id;
         public Vector3 Position;
     }
+
     public class SwapItemsModel
     {
+        private int currentId;
         private List<SwapItem> swapItems;
 
-        private int currentId;
-        
         public SwapItemsModel()
         {
-            swapItems = new ();
+            swapItems = new();
             currentId = -1;
         }
-        
+
         public void SetItems(List<Vector3> items)
         {
             swapItems = items
-                .Select((item, index) => 
-                    new SwapItem 
+                .Select((item, index) =>
+                    new SwapItem
                     {
                         Id = index,
                         Position = item,
                     }
                 ).ToList();
         }
-        
+
         public void ResetSelector()
         {
             currentId = -1;
         }
-        
+
         public void SetItem(int id)
         {
             if (id < 0 || id >= swapItems.Count)
             {
                 return;
             }
+
             currentId = id;
         }
-        
+
 #nullable enable
         public SwapItem? GetCurrentItem()
         {
@@ -54,11 +59,12 @@ namespace Feature.Model
             {
                 return null;
             }
+
             return swapItems[currentId];
         }
 
         /// <summary>
-        /// Returns the closest object from a specified location in a preferred direction, but within a maximum distance
+        ///     Returns the closest object from a specified location in a preferred direction, but within a maximum distance
         /// </summary>
         /// <param name="position">The specified location from which we need to find the nearest object</param>
         /// <param name="direction">The preferred direction in which we need to find the object</param>
@@ -95,7 +101,6 @@ namespace Feature.Model
             }
 
             return nearestItem;
-        } 
-        
+        }
     }
 }

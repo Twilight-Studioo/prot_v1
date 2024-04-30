@@ -118,7 +118,7 @@ namespace Core.Data
 
         public KeyValue(TKey key, TValue value)
         {
-            this.Key = key;
+            Key = key;
             this.value = value;
         }
 

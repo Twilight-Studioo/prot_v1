@@ -1,3 +1,5 @@
+#region
+
 using System.Collections.Generic;
 using System.Linq;
 using Feature.Common.Parameter;
@@ -6,14 +8,16 @@ using Feature.Views;
 using UnityEngine;
 using VContainer;
 
+#endregion
+
 namespace Feature.Presenter
 {
     public class SwapItemsPresenter
     {
-        private List<SwapItemView> swapItemViews;
-        private readonly SwapItemsModel swapItemsModel;
         private readonly CharacterParams characterParams;
-        
+        private readonly SwapItemsModel swapItemsModel;
+        private List<SwapItemView> swapItemViews;
+
         [Inject]
         public SwapItemsPresenter(
             SwapItemsModel swapItemsModel,
@@ -25,7 +29,7 @@ namespace Feature.Presenter
             var list = Object.FindObjectsOfType<SwapItemView>().ToList();
             SetItems(list);
         }
-        
+
         private void SetItems(List<SwapItemView> items)
         {
             swapItemViews = items.Select(item =>
@@ -37,12 +41,12 @@ namespace Feature.Presenter
                 swapItemViews.Select(view => view.transform.position).ToList()
             );
         }
-        
+
         public void ResetSelector()
         {
             swapItemsModel.ResetSelector();
         }
-        
+
         public void MoveSelector(Vector2 direction, Vector3 basePosition)
         {
             var item = swapItemsModel.GetCurrentItem();
@@ -56,10 +60,11 @@ namespace Feature.Presenter
             {
                 swapItemViews[item.Value.Id].SetHighlight(false);
             }
+
             swapItemViews[select.Value.Id].SetHighlight(true);
             swapItemsModel.SetItem(select.Value.Id);
         }
-        
+
         public SwapItemView SelectItem()
         {
             var item = swapItemsModel.GetCurrentItem();
@@ -67,6 +72,7 @@ namespace Feature.Presenter
             {
                 return null;
             }
+
             return swapItemViews[item.Value.Id];
         }
     }

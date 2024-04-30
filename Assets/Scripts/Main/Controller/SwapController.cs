@@ -1,3 +1,5 @@
+#region
+
 using System;
 using Feature.Common.Parameter;
 using Feature.Common.State;
@@ -7,15 +9,17 @@ using UniRx;
 using UnityEngine;
 using VContainer;
 
+#endregion
+
 namespace Main.Controller
 {
-    public class SwapController: IDisposable
+    public class SwapController : IDisposable
     {
-        private readonly GameState gameState;
-        private readonly SwapItemsPresenter swapItemsPresenter;
-        private readonly IPlayerPresenter playerPresenter;
         private readonly CharacterParams characterParams;
-        
+        private readonly GameState gameState;
+        private readonly IPlayerPresenter playerPresenter;
+        private readonly SwapItemsPresenter swapItemsPresenter;
+
         private IDisposable swap;
 
         [Inject]
@@ -30,6 +34,11 @@ namespace Main.Controller
             this.swapItemsPresenter = swapItemsPresenter;
             this.playerPresenter = playerPresenter;
             this.characterParams = characterParams;
+        }
+
+        public void Dispose()
+        {
+            swap?.Dispose();
         }
 
         public void Start()
@@ -49,17 +58,18 @@ namespace Main.Controller
                         EndSwap();
                         Observable
                             .Timer(TimeSpan.FromSeconds(characterParams.AfterSwappedTimeSec))
-                            .Subscribe(_ =>
-                            {
-                                Time.timeScale = 1.0f;
-                            });
+                            .Subscribe(_ => { Time.timeScale = 1.0f; });
                     }
                 });
         }
 
         public void SetSwap(bool isSwap)
         {
-            if (!gameState.IsPlaying()) return;
+            if (!gameState.IsPlaying())
+            {
+                return;
+            }
+
             if (isSwap)
             {
                 if (gameState.CurrentState.Value is GameState.State.Playing)
@@ -85,28 +95,27 @@ namespace Main.Controller
                 }
             }
         }
-        
+
         public void Select(Vector2 direction)
         {
             swapItemsPresenter.MoveSelector(direction, playerPresenter.GetPosition());
         }
-        
+
         private void DoSwap()
         {
             swapItemsPresenter.ResetSelector();
         }
-        
+
         private void EndSwap()
         {
             var item = swapItemsPresenter.SelectItem();
-            if (item == null) return;
+            if (item == null)
+            {
+                return;
+            }
+
             playerPresenter.SetPosition(item.transform.position);
             item.SetHighlight(false);
-        }
-
-        public void Dispose()
-        {
-            swap?.Dispose();
         }
     }
 }

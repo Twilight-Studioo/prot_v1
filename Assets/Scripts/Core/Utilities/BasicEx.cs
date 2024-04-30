@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Object = UnityEngine.Object;
 
 #endregion
 
@@ -25,7 +26,7 @@ namespace Core.Utilities
 
             return value;
         }
-        
+
         public static bool IsNull<T>(this T item) where T : class
         {
             if (item is null)
@@ -34,7 +35,7 @@ namespace Core.Utilities
             }
 
             // UnityObjectの場合、特別なnullチェックが必要
-            if (item is UnityEngine.Object unityObject)
+            if (item is Object unityObject)
             {
                 return unityObject == null;
             }

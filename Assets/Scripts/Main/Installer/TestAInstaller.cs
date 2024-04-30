@@ -1,9 +1,13 @@
+#region
+
 using VContainer;
 using VContainer.Unity;
 
+#endregion
+
 namespace Main.Installer
 {
-    public class TestAInstaller: LifetimeScope
+    public class TestAInstaller : LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)
         {

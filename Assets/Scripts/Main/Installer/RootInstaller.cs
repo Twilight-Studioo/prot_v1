@@ -15,6 +15,7 @@ namespace Main.Installer
     public class RootInstaller : LifetimeScope
     {
         [SerializeField] private CharacterParams characterParams;
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterComponentInHierarchy<InputActionAccessor>();

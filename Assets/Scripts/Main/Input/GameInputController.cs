@@ -30,9 +30,9 @@ namespace Main.Input
         private InputActionEvent jumpAction;
 
         private InputActionEvent moveAction;
-        
+
         private InputActionEvent swapAction;
-        
+
         private InputActionEvent swapSelectAction;
 
         [Inject]
@@ -54,9 +54,9 @@ namespace Main.Input
             jumpAction.Clear();
 
             moveAction.Clear();
-            
+
             swapAction.Clear();
-            
+
             swapSelectAction.Clear();
 
             disposables.Dispose();
@@ -77,10 +77,7 @@ namespace Main.Input
 
             Observable.EveryUpdate()
                 .Where(_ => IsJump() && gameState.CanMove())
-                .Subscribe(_ =>
-                {
-                    playerPresenter.OnJump();
-                })
+                .Subscribe(_ => { playerPresenter.OnJump(); })
                 .AddTo(disposables);
         }
 
@@ -92,10 +89,7 @@ namespace Main.Input
             // UniRxのEveryUpdateを使って入力を受け取る
             Observable.EveryUpdate()
                 .Where(_ => gameState.CanMove())
-                .Subscribe(_ =>
-                {
-                    playerPresenter.OnMove(moveAction.ReadValue<Vector2>());
-                })
+                .Subscribe(_ => { playerPresenter.OnMove(moveAction.ReadValue<Vector2>()); })
                 .AddTo(disposables);
         }
 
@@ -107,26 +101,19 @@ namespace Main.Input
                 .Where(_ => gameState.CanSwap())
                 .Select(_ => swapAction.ReadValue<float>())
                 .DistinctUntilChanged()
-                .Subscribe(_ =>
-                {
-                    swapController.SetSwap(swapAction.ReadValue<float>() > 0f);
-                })
+                .Subscribe(_ => { swapController.SetSwap(swapAction.ReadValue<float>() > 0f); })
                 .AddTo(disposables);
-            
+
             swapSelectAction = inputActionAccessor.CreateAction(Game.SwapSelect);
-            
+
             Observable.EveryUpdate()
                 .Where(_ => gameState.IsSwap())
-                .Subscribe(_ =>
-                {
-                    swapController.Select(swapSelectAction.ReadValue<Vector2>());
-                })
+                .Subscribe(_ => { swapController.Select(swapSelectAction.ReadValue<Vector2>()); })
                 .AddTo(disposables);
         }
-        
+
         private bool Swap() => swapAction.ReadValue<float>() > 0;
 
         private bool IsJump() => jumpAction.ReadValue<float>() > 0;
-        
     }
 }

@@ -20,12 +20,12 @@ namespace Main.Controller
     {
         private readonly GameInputController gameInputController;
         private readonly GameState gameState;
+        private readonly GameUIPresenter gameUIPresenter;
         private readonly IPlayerPresenter playerPresenter;
         private readonly RootInstance rootInstance;
-        private readonly UserRepository userRepository;
-        private readonly SwapItemsPresenter swapItemsPresenter;
-        private readonly GameUIPresenter gameUIPresenter;
         private readonly SwapController swapController;
+        private readonly SwapItemsPresenter swapItemsPresenter;
+        private readonly UserRepository userRepository;
 
         [Inject]
         public GameController(
@@ -54,18 +54,18 @@ namespace Main.Controller
             gameState.Initialize();
             // input action start
             gameInputController.Start();
-            
+
             // 
             userRepository.Load();
-            
-            
+
+
             playerPresenter.Start();
-            
+
             gameUIPresenter.Start();
-            
+
             swapController.Start();
-            
-            
+
+
             /* ここで開始処理 */
             gameState.Start();
             //
