@@ -22,5 +22,9 @@ namespace Feature.Interface.Presenter
         public void OnJump();
 
         public void Start();
+        
+        public Vector2 GetPosition();
+        
+        public void SetPosition(Vector2 position);
     }
 }

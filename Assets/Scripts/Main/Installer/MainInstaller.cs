@@ -33,6 +33,9 @@ namespace Main.Installer
 
             builder.Register<GameState>(Lifetime.Scoped);
             builder.Register<GameInputController>(Lifetime.Scoped);
+
+            builder.RegisterComponentInHierarchy<GameUIView>();
+            builder.Register<GameUIPresenter>(Lifetime.Scoped);
             
             builder.RegisterEntryPoint<GameController>(Lifetime.Scoped);
         }

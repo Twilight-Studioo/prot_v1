@@ -36,11 +36,11 @@ namespace Feature.Presenter
         {
             if (playerModel.StayGround.Value)
             {
-                playerView.SetVelocity(new Vector2(vector.x, 0f) * SysEx.Unity.ToDeltaTime * 8f * playerModel.Speed);
+                playerView.SetVelocity(new Vector2(vector.x, 0f) * 5f * playerModel.Speed);
             }
             else
             {
-                playerView.SetVelocity(new Vector2(vector.x, 0f) * SysEx.Unity.ToDeltaTime * 4f * playerModel.Speed);
+                playerView.SetVelocity(new Vector2(vector.x, 0f) * 2f * playerModel.Speed);
             }
         }
 
@@ -51,18 +51,24 @@ namespace Feature.Presenter
                 return;
             }
 
-            playerView.AddForce(Vector2.up * SysEx.Unity.ToDeltaTime * 340f * playerModel.JumpPower);
+            playerView.AddForce(Vector2.up * 500f * playerModel.JumpPower);
             playerModel.SetStayGround(false);
         }
 
         public void Start()
         {
             playerView.Position
-                .Where(p => p != playerModel.Position.Value)
+                .DistinctUntilChanged()
                 .Subscribe(x =>
                 {
                     playerModel.SetPosition(x);
                 });
+        }
+
+        public Vector2 GetPosition() => playerModel.Position.Value;
+        public void SetPosition(Vector2 position)
+        {
+            playerView.SetPosition(position);
         }
 
         private void OnHit(Collider2D collider)

@@ -1,13 +1,11 @@
 #region
 
-using Core.Utilities;
 using Feature.Common;
 using Feature.Common.State;
 using Feature.Interface.Presenter;
 using Feature.Presenter;
 using Feature.Repository;
 using Main.Input;
-using UniRx;
 using VContainer;
 using VContainer.Unity;
 
@@ -26,6 +24,8 @@ namespace Main.Controller
         private readonly RootInstance rootInstance;
         private readonly UserRepository userRepository;
         private readonly SwapItemsPresenter swapItemsPresenter;
+        private readonly GameUIPresenter gameUIPresenter;
+        private readonly SwapController swapController;
 
         [Inject]
         public GameController(
@@ -34,7 +34,9 @@ namespace Main.Controller
             RootInstance rootInstance,
             GameInputController gameInputController,
             GameState gameState,
-            SwapItemsPresenter swapItemsPresenter
+            SwapItemsPresenter swapItemsPresenter,
+            GameUIPresenter gameUIPresenter,
+            SwapController swapController
         )
         {
             this.userRepository = userRepository;
@@ -43,6 +45,8 @@ namespace Main.Controller
             this.gameState = gameState;
             this.playerPresenter = playerPresenter;
             this.swapItemsPresenter = swapItemsPresenter;
+            this.gameUIPresenter = gameUIPresenter;
+            this.swapController = swapController;
         }
 
         public void Start()
@@ -56,6 +60,10 @@ namespace Main.Controller
             
             
             playerPresenter.Start();
+            
+            gameUIPresenter.Start();
+            
+            swapController.Start();
             
             
             /* ここで開始処理 */

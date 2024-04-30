@@ -19,6 +19,10 @@ namespace Feature.Views
         private Rigidbody2D rigidBody2d;
 
         public IReactiveProperty<Vector2> Position { get; private set; }
+        
+        private Vector2 pendingForce = Vector2.zero;
+    //    private Vector2? pendingPosition = null;
+        private Vector2? pendingVelocity = null;
 
         private void Awake()
         {
@@ -28,6 +32,24 @@ namespace Feature.Views
 
         private void FixedUpdate()
         {
+            // 物理的な変更を適用
+            if (pendingForce != Vector2.zero)
+            {
+                rigidBody2d.AddForce(pendingForce, ForceMode2D.Force);
+                pendingForce = Vector2.zero; // 力を適用した後はリセット
+            }
+
+            if (pendingVelocity.HasValue)
+            {
+                rigidBody2d.velocity = new Vector2(pendingVelocity.Value.x, rigidBody2d.velocity.y);
+                pendingVelocity = null;
+            }
+
+            // if (pendingPosition.HasValue)
+            // {
+            //     rigidBody2d.MovePosition(pendingPosition.Value);
+            //     pendingPosition = null;
+            // }
             this.Position.Value = this.transform.position;
         }
 
@@ -48,7 +70,7 @@ namespace Feature.Views
         /// <param name="direction">方向</param>
         public void AddForce(Vector2 direction)
         {
-            rigidBody2d.AddForce(direction, ForceMode2D.Force);
+            pendingForce += direction;
         }
 
         /// <summary>
@@ -57,7 +79,7 @@ namespace Feature.Views
         /// <param name="velocity"></param>
         public void SetVelocity(Vector2 velocity)
         {
-            rigidBody2d.velocity = new(velocity.x, velocity.y + rigidBody2d.velocity.y);
+            pendingVelocity = new Vector2(velocity.x, rigidBody2d.velocity.y + velocity.y);
         }
 
         /// <summary>
@@ -66,7 +88,12 @@ namespace Feature.Views
         /// <param name="position"></param>
         public void SetPosition(Vector2 position)
         {
-            rigidBody2d.position = position;
+            transform.position = position;
+        }
+
+        public void MovePosition(Vector2 position)
+        {
+            rigidBody2d.MovePosition(position);
         }
     }
 }

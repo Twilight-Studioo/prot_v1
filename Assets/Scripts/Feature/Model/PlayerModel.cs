@@ -1,5 +1,6 @@
 #region
 
+using Feature.Common.Parameter;
 using UniRx;
 using UnityEngine;
 using VContainer;
@@ -14,8 +15,13 @@ namespace Feature.Model
     public class PlayerModel
     {
         [Inject]
-        public PlayerModel()
+        public PlayerModel(
+            CharacterParams characterParams
+        )
         {
+            this.Speed = characterParams.Speed;
+            this.JumpPower = characterParams.JumpPower;
+            
             this.Health = new ReactiveProperty<ushort>(100);
             this.StayGround = new ReactiveProperty<bool>(true);
             this.IsDead = this.Health.Select(x => x <= 0).ToReadOnlyReactiveProperty();
