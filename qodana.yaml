@@ -15,5 +15,7 @@ exclude:
   - name: CSharpWarnings__CS8632
   - name: RedundantUsingDirective
   - name: UnusedMethodReturnValue.Local
+  - name: UnusedMember.Local
+  - name: ArrangeTrailingCommaInMultilineLists
 profile:
   name: qodana.recommended
