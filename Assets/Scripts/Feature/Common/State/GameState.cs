@@ -1,3 +1,9 @@
+#region
+
+using UniRx;
+
+#endregion
+
 namespace Feature.Common.State
 {
     public class GameState
@@ -13,6 +19,9 @@ namespace Feature.Common.State
             // in game
             Playing,
 
+            // スワップ操作中
+            Swapped,
+
             // pause中
             Paused,
 
@@ -23,25 +32,33 @@ namespace Feature.Common.State
             Finished,
         }
 
-        public State GetState { get; private set; } = State.None;
 
-        // ゲーム画面内で操作可能かのフラグ(メニュー含む)
-        public bool IsPlaying() => this.GetState == State.Playing;
+        public IReactiveProperty<State> CurrentState { get; } = new ReactiveProperty<State>(State.None);
 
 
         public void Initialize()
         {
-            this.GetState = State.Started;
+            CurrentState.Value = State.Started;
         }
 
         public void Start()
         {
-            this.GetState = State.Playing;
+            CurrentState.Value = State.Playing;
         }
 
         public void Pause()
         {
-            this.GetState = State.Paused;
+            CurrentState.Value = State.Paused;
+        }
+
+        public void Swap()
+        {
+            CurrentState.Value = State.Swapped;
+        }
+
+        public void EndSwap()
+        {
+            CurrentState.Value = State.Playing;
         }
     }
 }

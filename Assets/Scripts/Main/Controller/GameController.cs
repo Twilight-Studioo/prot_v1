@@ -3,6 +3,7 @@
 using Feature.Common;
 using Feature.Common.State;
 using Feature.Interface.Presenter;
+using Feature.Presenter;
 using Feature.Repository;
 using Main.Input;
 using VContainer;
@@ -19,8 +20,11 @@ namespace Main.Controller
     {
         private readonly GameInputController gameInputController;
         private readonly GameState gameState;
+        private readonly GameUIPresenter gameUIPresenter;
         private readonly IPlayerPresenter playerPresenter;
         private readonly RootInstance rootInstance;
+        private readonly SwapController swapController;
+        private readonly SwapItemsPresenter swapItemsPresenter;
         private readonly UserRepository userRepository;
 
         [Inject]
@@ -29,7 +33,10 @@ namespace Main.Controller
             IPlayerPresenter playerPresenter,
             RootInstance rootInstance,
             GameInputController gameInputController,
-            GameState gameState
+            GameState gameState,
+            SwapItemsPresenter swapItemsPresenter,
+            GameUIPresenter gameUIPresenter,
+            SwapController swapController
         )
         {
             this.userRepository = userRepository;
@@ -37,6 +44,9 @@ namespace Main.Controller
             this.gameInputController = gameInputController;
             this.gameState = gameState;
             this.playerPresenter = playerPresenter;
+            this.swapItemsPresenter = swapItemsPresenter;
+            this.gameUIPresenter = gameUIPresenter;
+            this.swapController = swapController;
         }
 
         public void Start()
@@ -44,14 +54,18 @@ namespace Main.Controller
             gameState.Initialize();
             // input action start
             gameInputController.Start();
-            
+
             // 
             userRepository.Load();
-            
-            
+
+
             playerPresenter.Start();
-            
-            
+
+            gameUIPresenter.Start();
+
+            swapController.Start();
+
+
             /* ここで開始処理 */
             gameState.Start();
             //

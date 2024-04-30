@@ -1,14 +1,19 @@
+#region
+
 using Core.Utilities;
 using Feature.Common;
 using Feature.Common.Scene;
 using VContainer;
 using VContainer.Unity;
 
+#endregion
+
 namespace Main
 {
-    public class TestAController: IStartable
+    public class TestAController : IStartable
     {
         private readonly RootInstance rootInstance;
+
         [Inject]
         public TestAController(
             RootInstance rootInstance
@@ -16,9 +21,10 @@ namespace Main
         {
             this.rootInstance = rootInstance;
         }
+
         public void Start()
         {
-            TestADataModel dataModel = rootInstance.GetCurrentDataModel<TestADataModel>();
+            var dataModel = rootInstance.GetCurrentDataModel<TestADataModel>();
             DebugEx.LogDetailed(dataModel.Score);
         }
     }

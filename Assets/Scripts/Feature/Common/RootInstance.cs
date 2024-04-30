@@ -16,6 +16,6 @@ namespace Feature.Common
 
         public ISceneDataModel CurrentDataModel { get; set; }
 
-        public T GetCurrentDataModel<T>() where T : ISceneDataModel => (T)this.CurrentDataModel;
+        public T GetCurrentDataModel<T>() where T : ISceneDataModel => (T)CurrentDataModel;
     }
 }

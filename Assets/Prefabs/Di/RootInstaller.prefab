@@ -49,6 +49,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  characterParams: {fileID: 11400000, guid: 6d59a429a794341dcbb522951a047caf, type: 2}
 --- !u!114 &3901841429403297909
 MonoBehaviour:
   m_ObjectHideFlags: 0

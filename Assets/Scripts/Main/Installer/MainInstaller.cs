@@ -18,15 +18,25 @@ namespace Main.Installer
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterEntryPoint<GameController>(Lifetime.Scoped);
-
             builder.RegisterComponentInHierarchy<PlayerView>();
             builder.Register<PlayerModel>(Lifetime.Scoped);
             builder.Register<IPlayerPresenter, PlayerPresenter>(Lifetime.Scoped)
                 .WithParameter("playerView", resolver => resolver.Resolve<PlayerView>())
                 .WithParameter("playerModel", resolver => resolver.Resolve<PlayerModel>());
+
+            // TODO: 初期処理の挙動次第でcontrollerからinitするかEntryPointでinitするか変える
+            builder.Register<SwapItemsModel>(Lifetime.Scoped);
+            builder.Register<SwapItemsPresenter>(Lifetime.Scoped);
+
+            builder.Register<SwapController>(Lifetime.Scoped);
+
             builder.Register<GameState>(Lifetime.Scoped);
             builder.Register<GameInputController>(Lifetime.Scoped);
+
+            builder.RegisterComponentInHierarchy<GameUIView>();
+            builder.Register<GameUIPresenter>(Lifetime.Scoped);
+
+            builder.RegisterEntryPoint<GameController>(Lifetime.Scoped);
         }
     }
 }

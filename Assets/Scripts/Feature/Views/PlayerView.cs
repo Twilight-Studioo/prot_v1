@@ -1,7 +1,6 @@
 #region
 
 using System;
-using Core.Utilities;
 using UniRx;
 using UnityEngine;
 
@@ -16,6 +15,10 @@ namespace Feature.Views
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerView : MonoBehaviour
     {
+        private Vector2 pendingForce = Vector2.zero;
+
+        //    private Vector2? pendingPosition = null;
+        private Vector2? pendingVelocity;
         private Rigidbody2D rigidBody2d;
 
         public IReactiveProperty<Vector2> Position { get; private set; }
@@ -23,12 +26,30 @@ namespace Feature.Views
         private void Awake()
         {
             rigidBody2d = GetComponent<Rigidbody2D>();
-            this.Position = new ReactiveProperty<Vector2>(this.transform.position);
+            Position = new ReactiveProperty<Vector2>(transform.position);
         }
 
         private void FixedUpdate()
         {
-            this.Position.Value = this.transform.position;
+            // 物理的な変更を適用
+            if (pendingForce != Vector2.zero)
+            {
+                rigidBody2d.AddForce(pendingForce, ForceMode2D.Force);
+                pendingForce = Vector2.zero; // 力を適用した後はリセット
+            }
+
+            if (pendingVelocity.HasValue)
+            {
+                rigidBody2d.velocity = new(pendingVelocity.Value.x, rigidBody2d.velocity.y);
+                pendingVelocity = null;
+            }
+
+            // if (pendingPosition.HasValue)
+            // {
+            //     rigidBody2d.MovePosition(pendingPosition.Value);
+            //     pendingPosition = null;
+            // }
+            Position.Value = transform.position;
         }
 
         private void OnCollisionEnter2D(Collision2D other)
@@ -48,8 +69,7 @@ namespace Feature.Views
         /// <param name="direction">方向</param>
         public void AddForce(Vector2 direction)
         {
-            DebugEx.LogDetailed(direction);
-            rigidBody2d.AddForce(direction, ForceMode2D.Force);
+            pendingForce += direction;
         }
 
         /// <summary>
@@ -58,7 +78,7 @@ namespace Feature.Views
         /// <param name="velocity"></param>
         public void SetVelocity(Vector2 velocity)
         {
-            rigidBody2d.velocity = new(velocity.x, velocity.y + rigidBody2d.velocity.y);
+            pendingVelocity = new Vector2(velocity.x, rigidBody2d.velocity.y + velocity.y);
         }
 
         /// <summary>
@@ -67,7 +87,12 @@ namespace Feature.Views
         /// <param name="position"></param>
         public void SetPosition(Vector2 position)
         {
-            rigidBody2d.position = position;
+            transform.position = position;
+        }
+
+        public void MovePosition(Vector2 position)
+        {
+            rigidBody2d.MovePosition(position);
         }
     }
 }
