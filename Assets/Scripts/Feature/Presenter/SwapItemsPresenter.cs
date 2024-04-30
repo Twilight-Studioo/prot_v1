@@ -5,6 +5,7 @@ using System.Linq;
 using Feature.Common.Parameter;
 using Feature.Model;
 using Feature.Views;
+using UniRx;
 using UnityEngine;
 using VContainer;
 
@@ -32,9 +33,15 @@ namespace Feature.Presenter
 
         private void SetItems(List<SwapItemView> items)
         {
-            swapItemViews = items.Select(item =>
+            swapItemViews = items.Select((item, index) =>
             {
                 item.SetHighlight(false);
+                item.Position
+                    .ObserveEveryValueChanged(x => x.Value)
+                    .Subscribe(_ =>
+                    {
+                        swapItemsModel.UpdateItemPosition(index, item.transform.position);
+                    });
                 return item;
             }).ToList();
             swapItemsModel.SetItems(

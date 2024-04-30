@@ -114,7 +114,9 @@ namespace Main.Controller
                 return;
             }
 
+            var pos = playerPresenter.GetPosition();
             playerPresenter.SetPosition(item.transform.position);
+            item.SetPosition(pos);
             item.SetHighlight(false);
         }
     }
