@@ -28,7 +28,7 @@ namespace Feature.Model
                     new SwapItem 
                     {
                         Id = index,
-                        Position = item
+                        Position = item,
                     }
                 ).ToList();
         }
@@ -47,6 +47,7 @@ namespace Feature.Model
             currentId = id;
         }
         
+#nullable enable
         public SwapItem? GetCurrentItem()
         {
             if (currentId < 0 || currentId >= swapItems.Count)
@@ -64,22 +65,27 @@ namespace Feature.Model
         /// <param name="maxDistance">The maximum distance from 'position' at which an item may be considered (squared distance) </param>
         /// <returns>The nearest object in the preferred direction within the maximum distance, null if no such item exists</returns>
         public SwapItem? GetNearestItem(Vector3 position, Vector3 direction, float maxDistance)
+#nullable disable
         {
             var nearestItem = GetCurrentItem();
             var closestDistance = Mathf.Infinity;
 
             foreach (var item in swapItems)
             {
-                Vector3 toItem = item.Position - position;
-                if (Vector3.Dot(toItem, direction) > 0) // Check if item is in the specified direction
+                var toItem = item.Position - position;
+                if (!(Vector3.Dot(toItem, direction) > 0)) // Check if item is in the specified direction
                 {
-                    float distance = toItem.sqrMagnitude;
-                    if (distance < closestDistance && distance <= maxDistance)
-                    {
-                        nearestItem = item;
-                        closestDistance = distance;
-                    }
+                    continue;
                 }
+
+                var distance = toItem.sqrMagnitude;
+                if (!(distance < closestDistance) || !(distance <= maxDistance))
+                {
+                    continue;
+                }
+
+                nearestItem = item;
+                closestDistance = distance;
             }
 
             // If the closest item is beyond the max distance, return null

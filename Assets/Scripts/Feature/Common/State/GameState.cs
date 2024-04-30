@@ -30,7 +30,7 @@ namespace Feature.Common.State
         }
         
         
-        public IReactiveProperty<State> CurrentState { get; private set; } = new ReactiveProperty<State>(State.None);
+        public IReactiveProperty<State> CurrentState { get; } = new ReactiveProperty<State>(State.None);
 
 
         public void Initialize()

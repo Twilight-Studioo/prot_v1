@@ -19,13 +19,13 @@ namespace Feature.Model
             CharacterParams characterParams
         )
         {
-            this.Speed = characterParams.Speed;
-            this.JumpPower = characterParams.JumpPower;
+            Speed = characterParams.Speed;
+            JumpPower = characterParams.JumpPower;
             
-            this.Health = new ReactiveProperty<ushort>(100);
-            this.StayGround = new ReactiveProperty<bool>(true);
-            this.IsDead = this.Health.Select(x => x <= 0).ToReadOnlyReactiveProperty();
-            this.Position = new ReactiveProperty<Vector2>(Vector2.zero);
+            Health = new ReactiveProperty<ushort>(100);
+            StayGround = new ReactiveProperty<bool>(true);
+            IsDead = Health.Select(x => x <= 0).ToReadOnlyReactiveProperty();
+            Position = new ReactiveProperty<Vector2>(Vector2.zero);
         }
 
         public IReactiveProperty<ushort> Health { get; }
@@ -34,33 +34,31 @@ namespace Feature.Model
 
         public IReactiveProperty<bool> StayGround { get; }
 
-        public float Speed { get; private set; } = 1.0f;
+        public float Speed { get; private set; }
 
-        public float JumpPower { get; private set; } = 1.0f;
+        public float JumpPower { get; private set; }
 
         public IReactiveProperty<Vector2> Position { get; }
 
-        public bool SetStayGround(bool stayGround)
+        public void SetStayGround(bool stayGround)
         {
-            this.StayGround.Value = stayGround;
-            return this.StayGround.Value;
+            StayGround.Value = stayGround;
         }
 
-        public Vector2 SetPosition(Vector2 position)
+        public void SetPosition(Vector2 position)
         {
-            this.Position.Value = position;
-            return this.Position.Value;
+            Position.Value = position;
         }
 
         public int SetHealth(ushort health)
         {
-            this.Health.Value = health;
-            return this.Health.Value;
+            Health.Value = health;
+            return Health.Value;
         }
 
         public void Damage(ushort damage)
         {
-            this.Health.Value -= damage;
+            Health.Value -= damage;
         }
     }
 }
