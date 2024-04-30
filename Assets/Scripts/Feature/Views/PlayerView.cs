@@ -48,7 +48,6 @@ namespace Feature.Views
         /// <param name="direction">方向</param>
         public void AddForce(Vector2 direction)
         {
-            DebugEx.LogDetailed(direction);
             rigidBody2d.AddForce(direction, ForceMode2D.Force);
         }
 

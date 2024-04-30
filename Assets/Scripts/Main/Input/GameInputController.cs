@@ -5,6 +5,7 @@ using Core.Input;
 using Core.Utilities;
 using Feature.Common.State;
 using Feature.Interface.Presenter;
+using Main.Controller;
 using UniRx;
 using UnityEngine;
 using VContainer;
@@ -24,21 +25,28 @@ namespace Main.Input
         private readonly GameState gameState;
         private readonly InputActionAccessor inputActionAccessor;
         private readonly IPlayerPresenter playerPresenter;
+        private readonly SwapController swapController;
 
         private InputActionEvent jumpAction;
 
         private InputActionEvent moveAction;
+        
+        private InputActionEvent swapAction;
+        
+        private InputActionEvent swapSelectAction;
 
         [Inject]
         public GameInputController(
             InputActionAccessor inputActionAccessor,
             GameState gameState,
-            IPlayerPresenter playerPresenter
+            IPlayerPresenter playerPresenter,
+            SwapController swapController
         )
         {
             this.inputActionAccessor = inputActionAccessor;
             this.gameState = gameState;
             this.playerPresenter = playerPresenter;
+            this.swapController = swapController;
         }
 
         public void Dispose()
@@ -46,6 +54,10 @@ namespace Main.Input
             jumpAction.Clear();
 
             moveAction.Clear();
+            
+            swapAction.Clear();
+            
+            swapSelectAction.Clear();
 
             disposables.Dispose();
         }
@@ -56,32 +68,18 @@ namespace Main.Input
             DebugEx.LogDetailed("GameInputProvider Start");
             EnableJump();
             EnableMove();
-            // moveAction.Started += _ =>
-            // {
-            //     DebugEx.LogDetailed("Move Started");
-            // };
-            // moveAction.Performed += _ =>
-            // {
-            //     DebugEx.LogDetailed("Move Performed");
-            // };
-            // moveAction.Canceled += _ =>
-            // {
-            //     DebugEx.LogDetailed("Move Canceled");
-            // };
+            EnableSwap();
         }
 
         private void EnableJump()
         {
             jumpAction = inputActionAccessor.CreateAction(Game.Jump);
 
-            Observable
-                .Where<long>(Observable.EveryUpdate(), _ => IsJump())
+            Observable.EveryUpdate()
+                .Where(_ => IsJump() && gameState.CanMove())
                 .Subscribe(_ =>
                 {
-                    if (gameState.GetState == GameState.State.Playing)
-                    {
-                        playerPresenter.OnJump();
-                    }
+                    playerPresenter.OnJump();
                 })
                 .AddTo(disposables);
         }
@@ -92,8 +90,8 @@ namespace Main.Input
             moveAction = inputActionAccessor.CreateAction(Game.Move);
 
             // UniRxのEveryUpdateを使って入力を受け取る
-            Observable
-                .Where<long>(Observable.EveryUpdate(), _ => CanMove())
+            Observable.EveryUpdate()
+                .Where(_ => gameState.CanMove())
                 .Subscribe(_ =>
                 {
                     playerPresenter.OnMove(moveAction.ReadValue<Vector2>());
@@ -101,8 +99,34 @@ namespace Main.Input
                 .AddTo(disposables);
         }
 
-        private bool IsJump() => jumpAction.ReadValue<float>() > 0;
+        private void EnableSwap()
+        {
+            swapAction = inputActionAccessor.CreateAction(Game.DoSwap);
 
-        private bool CanMove() => gameState.IsPlaying();
+            Observable.EveryUpdate()
+                .Where(_ => gameState.CanSwap())
+                .Select(_ => swapAction.ReadValue<float>())
+                .DistinctUntilChanged()
+                .Subscribe(_ =>
+                {
+                    swapController.SetSwap(swapAction.ReadValue<float>() > 0f);
+                })
+                .AddTo(disposables);
+            
+            swapSelectAction = inputActionAccessor.CreateAction(Game.SwapSelect);
+            
+            Observable.EveryUpdate()
+                .Where(_ => gameState.IsSwap())
+                .Subscribe(_ =>
+                {
+                    swapController.Select(swapSelectAction.ReadValue<Vector2>());
+                })
+                .AddTo(disposables);
+        }
+        
+        private bool Swap() => swapAction.ReadValue<float>() > 0;
+
+        private bool IsJump() => jumpAction.ReadValue<float>() > 0;
+        
     }
 }

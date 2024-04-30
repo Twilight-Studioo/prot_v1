@@ -18,6 +18,8 @@ namespace Core.Input
        public static readonly Guid MapId = new Guid("2b6c9c66-7c6c-46e2-9bbb-5833f1fad3d2");
        public static readonly Guid Move = new Guid("8873c418-a0af-4f87-ae5f-335d7e8a8e6a");
        public static readonly Guid Jump = new Guid("cac06a68-f0ac-4ff3-bdfa-b7c805d9161f");
+       public static readonly Guid SwapSelect = new Guid("226589b0-d7eb-4f03-b210-964a33b50ed5");
+       public static readonly Guid DoSwap = new Guid("dcc946f8-cc49-4206-9ced-f4b06fbdd7a2");
     }
 
 

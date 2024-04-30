@@ -1,10 +1,13 @@
 #region
 
+using Core.Utilities;
 using Feature.Common;
 using Feature.Common.State;
 using Feature.Interface.Presenter;
+using Feature.Presenter;
 using Feature.Repository;
 using Main.Input;
+using UniRx;
 using VContainer;
 using VContainer.Unity;
 
@@ -22,6 +25,7 @@ namespace Main.Controller
         private readonly IPlayerPresenter playerPresenter;
         private readonly RootInstance rootInstance;
         private readonly UserRepository userRepository;
+        private readonly SwapItemsPresenter swapItemsPresenter;
 
         [Inject]
         public GameController(
@@ -29,7 +33,8 @@ namespace Main.Controller
             IPlayerPresenter playerPresenter,
             RootInstance rootInstance,
             GameInputController gameInputController,
-            GameState gameState
+            GameState gameState,
+            SwapItemsPresenter swapItemsPresenter
         )
         {
             this.userRepository = userRepository;
@@ -37,6 +42,7 @@ namespace Main.Controller
             this.gameInputController = gameInputController;
             this.gameState = gameState;
             this.playerPresenter = playerPresenter;
+            this.swapItemsPresenter = swapItemsPresenter;
         }
 
         public void Start()
