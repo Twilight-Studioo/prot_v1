@@ -17,5 +17,6 @@ exclude:
   - name: UnusedMethodReturnValue.Local
   - name: UnusedMember.Local
   - name: ArrangeTrailingCommaInMultilineLists
+  - name: ArrangeObjectCreationWhenTypeNotEvident
 profile:
   name: qodana.recommended
