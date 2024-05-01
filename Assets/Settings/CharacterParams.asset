@@ -15,6 +15,6 @@ MonoBehaviour:
   speed: 1
   jumpPower: 1
   swapTimeSec: 3
-  canSwapDistance: 20
+  canSwapDistance: 40
   afterSwappedTimeSec: 0.5
   inSwapTimeScale: 0.3

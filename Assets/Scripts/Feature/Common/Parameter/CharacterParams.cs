@@ -15,7 +15,7 @@ namespace Feature.Common.Parameter
 
         public float swapTimeSec = 3f;
 
-        public float canSwapDistance = 20f;
+        public float canSwapDistance = 40f;
 
         /// <summary>
         ///     スワップ後にTimeScaleが元に戻るまでの間隔
