@@ -14,13 +14,14 @@ namespace Feature.Model
     /// </summary>
     public class PlayerModel
     {
+        private readonly CharacterParams characterParams;
+
         [Inject]
         public PlayerModel(
             CharacterParams characterParams
         )
         {
-            Speed = characterParams.Speed;
-            JumpPower = characterParams.JumpPower;
+            this.characterParams = characterParams;
 
             Health = new ReactiveProperty<ushort>(100);
             StayGround = new ReactiveProperty<bool>(true);
@@ -34,9 +35,9 @@ namespace Feature.Model
 
         public IReactiveProperty<bool> StayGround { get; }
 
-        public float Speed { get; private set; }
+        public float Speed => characterParams.speed;
 
-        public float JumpPower { get; private set; }
+        public float JumpPower => characterParams.jumpPower;
 
         public IReactiveProperty<Vector2> Position { get; }
 

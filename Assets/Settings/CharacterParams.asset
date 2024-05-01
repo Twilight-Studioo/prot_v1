@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e4732f6f53e47319744e9ad390e5a17, type: 3}
   m_Name: CharacterParams
   m_EditorClassIdentifier: 
-  Speed: 1
-  JumpPower: 1
-  SwapTimeSec: 5
-  CanSwapDistance: 40
-  AfterSwappedTimeSec: 0.1
-  InSwapTimeScale: 0.2
+  speed: 1
+  jumpPower: 1
+  swapTimeSec: 3
+  canSwapDistance: 20
+  afterSwappedTimeSec: 0.5
+  inSwapTimeScale: 0.3

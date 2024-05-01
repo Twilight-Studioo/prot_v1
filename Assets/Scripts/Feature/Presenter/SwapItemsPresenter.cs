@@ -38,10 +38,7 @@ namespace Feature.Presenter
                 item.SetHighlight(false);
                 item.Position
                     .ObserveEveryValueChanged(x => x.Value)
-                    .Subscribe(_ =>
-                    {
-                        swapItemsModel.UpdateItemPosition(index, item.transform.position);
-                    });
+                    .Subscribe(_ => { swapItemsModel.UpdateItemPosition(index, item.transform.position); });
                 return item;
             }).ToList();
             swapItemsModel.SetItems(
@@ -57,7 +54,7 @@ namespace Feature.Presenter
         public void MoveSelector(Vector2 direction, Vector3 basePosition)
         {
             var item = swapItemsModel.GetCurrentItem();
-            var select = swapItemsModel.GetNearestItem(basePosition, direction, characterParams.CanSwapDistance);
+            var select = swapItemsModel.GetNearestItem(basePosition, direction, characterParams.canSwapDistance);
             if (!select.HasValue)
             {
                 return;
