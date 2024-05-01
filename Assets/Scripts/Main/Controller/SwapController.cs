@@ -20,7 +20,7 @@ namespace Main.Controller
         private readonly IPlayerPresenter playerPresenter;
         private readonly SwapItemsPresenter swapItemsPresenter;
 
-        private IDisposable swap;
+        private readonly CompositeDisposable swapTimer;
 
         [Inject]
         public SwapController(
@@ -34,11 +34,12 @@ namespace Main.Controller
             this.swapItemsPresenter = swapItemsPresenter;
             this.playerPresenter = playerPresenter;
             this.characterParams = characterParams;
+            swapTimer = new();
         }
 
         public void Dispose()
         {
-            swap?.Dispose();
+            swapTimer?.Dispose();
         }
 
         public void Start()
@@ -51,7 +52,6 @@ namespace Main.Controller
                     if (gameState.CurrentState.Value is GameState.State.Swapped)
                     {
                         DoSwap();
-                        Time.timeScale = characterParams.inSwapTimeScale;
                     }
                     else
                     {
@@ -75,7 +75,7 @@ namespace Main.Controller
                 if (gameState.CurrentState.Value is GameState.State.Playing)
                 {
                     gameState.Swap();
-                    swap = Observable
+                    Observable
                         .Timer(TimeSpan.FromSeconds(characterParams.swapTimeSec * Time.timeScale))
                         .Subscribe(_ =>
                         {
@@ -83,14 +83,15 @@ namespace Main.Controller
                             {
                                 gameState.EndSwap();
                             }
-                        });
+                        })
+                        .AddTo(swapTimer);
                 }
             }
             else
             {
                 if (gameState.CurrentState.Value is GameState.State.Swapped)
                 {
-                    swap?.Dispose();
+                    swapTimer?.Clear();
                     gameState.EndSwap();
                 }
             }
@@ -105,7 +106,6 @@ namespace Main.Controller
         {
             Time.timeScale = characterParams.inSwapTimeScale;
             swapItemsPresenter.ResetSelector();
-            gameState.Swap();
         }
 
         private void EndSwap()

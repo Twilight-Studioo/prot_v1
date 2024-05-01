@@ -41,7 +41,7 @@ namespace Feature.Model
         {
             currentId = -1;
         }
-        
+
         public void UpdateItemPosition(int id, Vector3 position)
         {
             if (id < 0 || id >= swapItems.Count)
@@ -49,7 +49,7 @@ namespace Feature.Model
                 return;
             }
 
-            swapItems[id] = new SwapItem
+            swapItems[id] = new()
             {
                 Id = id,
                 Position = position,

@@ -1,7 +1,6 @@
 #region
 
 using UnityEngine;
-using UnityEngine.Serialization;
 
 #endregion
 

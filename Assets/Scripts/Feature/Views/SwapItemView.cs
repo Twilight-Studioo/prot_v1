@@ -1,6 +1,5 @@
 #region
 
-using System;
 using UniRx;
 using UnityEngine;
 
@@ -19,7 +18,12 @@ namespace Feature.Views
         {
             Position = new ReactiveProperty<Vector2>(transform.position);
         }
-        
+
+        private void FixedUpdate()
+        {
+            Position.Value = transform.position;
+        }
+
         public void SetPosition(Vector2 position)
         {
             transform.position = position;
@@ -28,11 +32,6 @@ namespace Feature.Views
         public void SetHighlight(bool isHighlight)
         {
             material.color = isHighlight ? Color.red : Color.blue;
-        }
-
-        private void FixedUpdate()
-        {
-            Position.Value = transform.position;
         }
     }
 }

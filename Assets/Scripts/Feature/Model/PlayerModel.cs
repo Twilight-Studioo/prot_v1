@@ -15,6 +15,7 @@ namespace Feature.Model
     public class PlayerModel
     {
         private readonly CharacterParams characterParams;
+
         [Inject]
         public PlayerModel(
             CharacterParams characterParams

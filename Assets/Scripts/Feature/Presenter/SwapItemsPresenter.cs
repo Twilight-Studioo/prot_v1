@@ -38,10 +38,7 @@ namespace Feature.Presenter
                 item.SetHighlight(false);
                 item.Position
                     .ObserveEveryValueChanged(x => x.Value)
-                    .Subscribe(_ =>
-                    {
-                        swapItemsModel.UpdateItemPosition(index, item.transform.position);
-                    });
+                    .Subscribe(_ => { swapItemsModel.UpdateItemPosition(index, item.transform.position); });
                 return item;
             }).ToList();
             swapItemsModel.SetItems(
