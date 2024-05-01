@@ -51,13 +51,13 @@ namespace Main.Controller
                     if (gameState.CurrentState.Value is GameState.State.Swapped)
                     {
                         DoSwap();
-                        Time.timeScale = characterParams.InSwapTimeScale;
+                        Time.timeScale = characterParams.inSwapTimeScale;
                     }
                     else
                     {
                         EndSwap();
                         Observable
-                            .Timer(TimeSpan.FromSeconds(characterParams.AfterSwappedTimeSec))
+                            .Timer(TimeSpan.FromSeconds(characterParams.afterSwappedTimeSec * Time.timeScale))
                             .Subscribe(_ => { Time.timeScale = 1.0f; });
                     }
                 });
@@ -76,7 +76,7 @@ namespace Main.Controller
                 {
                     gameState.Swap();
                     swap = Observable
-                        .Timer(TimeSpan.FromSeconds(characterParams.SwapTimeSec))
+                        .Timer(TimeSpan.FromSeconds(characterParams.swapTimeSec * Time.timeScale))
                         .Subscribe(_ =>
                         {
                             if (gameState.IsSwap())
@@ -103,7 +103,9 @@ namespace Main.Controller
 
         private void DoSwap()
         {
+            Time.timeScale = characterParams.inSwapTimeScale;
             swapItemsPresenter.ResetSelector();
+            gameState.Swap();
         }
 
         private void EndSwap()
