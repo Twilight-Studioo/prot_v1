@@ -108,6 +108,8 @@ namespace Main.Input
 
             Observable.EveryUpdate()
                 .Where(_ => gameState.IsSwap())
+                .Select(_ => swapSelectAction.ReadValue<Vector2>())
+                .DistinctUntilChanged()
                 .Subscribe(_ => { swapController.Select(swapSelectAction.ReadValue<Vector2>()); })
                 .AddTo(disposables);
         }

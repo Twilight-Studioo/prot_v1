@@ -89,23 +89,32 @@ namespace Feature.Model
         {
             var nearestItem = GetCurrentItem();
             var closestDistance = Mathf.Infinity;
+            var nearestDirection = Mathf.Infinity;
+            if (direction.x == 0f && direction.y == 0f)
+            {
+                return null;
+            }
 
-            foreach (var item in swapItems)
+            direction = new(-direction.x, -direction.y, direction.z);
+            var items = swapItems
+                .Where(x => Vector3.Distance(x.Position, position) < maxDistance);
+            foreach (var item in items)
             {
                 var toItem = item.Position - position;
-                if (!(Vector3.Dot(toItem, direction) > 0)) // Check if item is in the specified direction
-                {
-                    continue;
-                }
-
+                // if (!(Vector3.Dot(toItem, direction) > 0)) // Check if item is in the specified direction
+                // {
+                //     continue;
+                // }
+                var dir = Vector3.Dot(toItem, direction);
                 var distance = toItem.sqrMagnitude;
-                if (!(distance < closestDistance) || !(distance <= maxDistance))
+                if (distance > maxDistance || nearestDirection < dir)
                 {
                     continue;
                 }
 
                 nearestItem = item;
                 closestDistance = distance;
+                nearestDirection = dir;
             }
 
             // If the closest item is beyond the max distance, return null

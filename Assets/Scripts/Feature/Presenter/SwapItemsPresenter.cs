@@ -1,5 +1,6 @@
 #region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Feature.Common.Parameter;
@@ -8,15 +9,18 @@ using Feature.Views;
 using UniRx;
 using UnityEngine;
 using VContainer;
+using Object = UnityEngine.Object;
 
 #endregion
 
 namespace Feature.Presenter
 {
-    public class SwapItemsPresenter
+    public class SwapItemsPresenter : IDisposable
     {
         private readonly CharacterParams characterParams;
         private readonly SwapItemsModel swapItemsModel;
+
+        private readonly CompositeDisposable rememberItemPosition;
         private List<SwapItemView> swapItemViews;
 
         [Inject]
@@ -28,17 +32,24 @@ namespace Feature.Presenter
             this.swapItemsModel = swapItemsModel;
             this.characterParams = characterParams;
             var list = Object.FindObjectsOfType<SwapItemView>().ToList();
+            rememberItemPosition = new();
             SetItems(list);
+        }
+
+        public void Dispose()
+        {
+            rememberItemPosition.Clear();
         }
 
         private void SetItems(List<SwapItemView> items)
         {
+            rememberItemPosition.Clear();
             swapItemViews = items.Select((item, index) =>
             {
                 item.SetHighlight(false);
                 item.Position
-                    .ObserveEveryValueChanged(x => x.Value)
-                    .Subscribe(_ => { swapItemsModel.UpdateItemPosition(index, item.transform.position); });
+                    .Subscribe(_ => { swapItemsModel.UpdateItemPosition(index, item.Position.Value); })
+                    .AddTo(rememberItemPosition);
                 return item;
             }).ToList();
             swapItemsModel.SetItems(

@@ -12,14 +12,9 @@ namespace Feature.Views
     {
         [SerializeField] private SpriteRenderer material;
 
-        public IReactiveProperty<Vector2> Position;
+        public readonly IReactiveProperty<Vector2> Position = new ReactiveProperty<Vector2>();
 
-        private void Awake()
-        {
-            Position = new ReactiveProperty<Vector2>(transform.position);
-        }
-
-        private void FixedUpdate()
+        private void Update()
         {
             Position.Value = transform.position;
         }
