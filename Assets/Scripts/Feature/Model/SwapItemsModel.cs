@@ -90,12 +90,17 @@ namespace Feature.Model
             var nearestItem = GetCurrentItem();
             var closestDistance = Mathf.Infinity;
             var nearestDirection = Mathf.Infinity;
-            if (direction.x == 0f && direction.y == 0f)
+
+            // 入力されていないなら終了
+            if (Mathf.Abs(direction.x) <= 0.05f && Mathf.Abs(direction.y) <= 0.05f)
             {
+                nearestItem = null;
+                closestDistance = 0f;
                 return null;
             }
 
-            direction = new(-direction.x, -direction.y, direction.z);
+            direction = new(direction.y, -direction.x, direction.z);
+            // Debug.Log(direction);
             var items = swapItems
                 .Where(x => Vector3.Distance(x.Position, position) < maxDistance);
             foreach (var item in items)
@@ -105,10 +110,16 @@ namespace Feature.Model
                 // {
                 //     continue;
                 // }
-                var dir = Vector3.Dot(toItem, direction);
+
+                // 入力方向とオブジェクトの方向の内積
+                // -1~1 1の時入力と重なる
+                var dir = Vector3.Dot(Vector3.Normalize(toItem), Vector3.Normalize(direction));
+                Debug.Log(dir);
                 var distance = toItem.sqrMagnitude;
-                if (distance > maxDistance || nearestDirection < dir)
+                if (distance > maxDistance || nearestDirection < dir || dir < 0.3f)
                 {
+                    //nearestItem = null;
+                    //closestDistance = 0f;
                     continue;
                 }
 
