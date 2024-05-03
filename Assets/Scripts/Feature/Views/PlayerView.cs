@@ -29,6 +29,11 @@ namespace Feature.Views
             Position = new ReactiveProperty<Vector2>(transform.position);
         }
 
+        private void Update()
+        {
+            Position.Value = transform.position;
+        }
+
         private void FixedUpdate()
         {
             // 物理的な変更を適用
@@ -49,7 +54,6 @@ namespace Feature.Views
             //     rigidBody2d.MovePosition(pendingPosition.Value);
             //     pendingPosition = null;
             // }
-            Position.Value = transform.position;
         }
 
         private void OnCollisionEnter2D(Collision2D other)

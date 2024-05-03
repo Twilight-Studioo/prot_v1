@@ -1,5 +1,6 @@
 #region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -85,42 +86,29 @@ namespace Feature.Model
         /// <param name="maxDistance">The maximum distance from 'position' at which an item may be considered (squared distance) </param>
         /// <returns>The nearest object in the preferred direction within the maximum distance, null if no such item exists</returns>
         public SwapItem? GetNearestItem(Vector3 position, Vector3 direction, float maxDistance)
-#nullable disable
         {
             var nearestItem = GetCurrentItem();
-            var closestDistance = Mathf.Infinity;
             var nearestDirection = Mathf.Infinity;
             if (direction.x == 0f && direction.y == 0f)
             {
                 return null;
             }
 
-            direction = new(-direction.x, -direction.y, direction.z);
+            direction = new(direction.x, direction.y, direction.z);
             var items = swapItems
                 .Where(x => Vector3.Distance(x.Position, position) < maxDistance);
+            const float def = Mathf.Deg2Rad * 90f;
             foreach (var item in items)
             {
                 var toItem = item.Position - position;
-                // if (!(Vector3.Dot(toItem, direction) > 0)) // Check if item is in the specified direction
-                // {
-                //     continue;
-                // }
-                var dir = Vector3.Dot(toItem, direction);
-                var distance = toItem.sqrMagnitude;
-                if (distance > maxDistance || nearestDirection < dir)
+                var dir = Vector2.Dot(direction, toItem.normalized) - def;
+                if (Math.Abs(nearestDirection) < Math.Abs(dir))
                 {
                     continue;
                 }
 
                 nearestItem = item;
-                closestDistance = distance;
                 nearestDirection = dir;
-            }
-
-            // If the closest item is beyond the max distance, return null
-            if (closestDistance > maxDistance)
-            {
-                return null;
             }
 
             return nearestItem;
