@@ -18,9 +18,9 @@ namespace Feature.Presenter
     public class SwapItemsPresenter : IDisposable
     {
         private readonly CharacterParams characterParams;
-        private readonly SwapItemsModel swapItemsModel;
 
         private readonly CompositeDisposable rememberItemPosition;
+        private readonly SwapItemsModel swapItemsModel;
         private List<SwapItemView> swapItemViews;
 
         [Inject]
