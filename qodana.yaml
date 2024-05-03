@@ -17,6 +17,6 @@ exclude:
   - name: UnusedMethodReturnValue.Local
   - name: UnusedMember.Local
   - name: ArrangeTrailingCommaInMultilineLists
-  - name: ArrangeObjectCreationWhenTypeNotEvident
+  - name: ArrangeObjectCreationWhenTypeNotEvident # unused return type warning for void
 profile:
   name: qodana.recommended

@@ -44,14 +44,17 @@ namespace Feature.Presenter
         private void SetItems(List<SwapItemView> items)
         {
             rememberItemPosition.Clear();
-            swapItemViews = items.Select((item, index) =>
-            {
-                item.SetHighlight(false);
-                item.Position
-                    .Subscribe(_ => { swapItemsModel.UpdateItemPosition(index, item.Position.Value); })
-                    .AddTo(rememberItemPosition);
-                return item;
-            }).ToList();
+            swapItemViews = items
+                .Select((item, index) =>
+                    {
+                        item.SetHighlight(false);
+                        item.Position
+                            .Subscribe(_ => { swapItemsModel.UpdateItemPosition(index, item.Position.Value); })
+                            .AddTo(rememberItemPosition);
+                        return item;
+                    }
+                )
+                .ToList();
             swapItemsModel.SetItems(
                 swapItemViews.Select(view => view.transform.position).ToList()
             );
