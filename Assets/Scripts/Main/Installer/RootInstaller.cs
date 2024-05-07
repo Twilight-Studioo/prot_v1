@@ -15,6 +15,8 @@ namespace Main.Installer
     public class RootInstaller : LifetimeScope
     {
         [SerializeField] private CharacterParams characterParams;
+        [SerializeField] private Enemy1Params enemy1Params;
+        [SerializeField] private Enemy2Params enemy2Params;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -24,6 +26,8 @@ namespace Main.Installer
             builder.Register<UserRepository>(Lifetime.Singleton);
 
             builder.RegisterComponent(characterParams);
+            builder.RegisterComponent(enemy1Params);
+            builder.RegisterComponent(enemy2Params);
         }
     }
 }

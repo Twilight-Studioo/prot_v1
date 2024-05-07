@@ -35,6 +35,8 @@ namespace Main.Input
 
         private InputActionEvent swapSelectAction;
 
+        private InputActionEvent attackAction;
+
         [Inject]
         public GameInputController(
             InputActionAccessor inputActionAccessor,
@@ -69,6 +71,19 @@ namespace Main.Input
             EnableJump();
             EnableMove();
             EnableSwap();
+            EnableAttack();
+        }
+
+        private void EnableAttack()
+        {
+            attackAction = inputActionAccessor.CreateAction(Game.Attack);
+
+            Observable.EveryUpdate()
+                .Where(_ => gameState.CanAttack())
+                .Subscribe(_ =>
+                {
+
+                });
         }
 
         private void EnableJump()

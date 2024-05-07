@@ -77,5 +77,10 @@ namespace Feature.Presenter
                 playerModel.SetStayGround(true);
             }
         }
+
+        public void Attack()
+        {
+            
+        }
     }
 }

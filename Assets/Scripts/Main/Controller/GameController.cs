@@ -6,6 +6,7 @@ using Feature.Interface.Presenter;
 using Feature.Presenter;
 using Feature.Repository;
 using Main.Input;
+using Service;
 using VContainer;
 using VContainer.Unity;
 
@@ -26,6 +27,7 @@ namespace Main.Controller
         private readonly SwapController swapController;
         private readonly SwapItemsPresenter swapItemsPresenter;
         private readonly UserRepository userRepository;
+        private readonly EnemySpawnService enemySpawnService;
 
         [Inject]
         public GameController(
@@ -36,7 +38,8 @@ namespace Main.Controller
             GameState gameState,
             SwapItemsPresenter swapItemsPresenter,
             GameUIPresenter gameUIPresenter,
-            SwapController swapController
+            SwapController swapController,
+            EnemySpawnService enemySpawnService
         )
         {
             this.userRepository = userRepository;
@@ -47,6 +50,7 @@ namespace Main.Controller
             this.swapItemsPresenter = swapItemsPresenter;
             this.gameUIPresenter = gameUIPresenter;
             this.swapController = swapController;
+            this.enemySpawnService = enemySpawnService;
         }
 
         public void Start()
@@ -64,6 +68,7 @@ namespace Main.Controller
             gameUIPresenter.Start();
 
             swapController.Start();
+            enemySpawnService.Spawn(EnemySpawnService.EnemyType.Enemy1, playerPresenter.GetPosition());
 
 
             /* ここで開始処理 */

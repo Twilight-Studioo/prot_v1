@@ -64,6 +64,15 @@ namespace Core.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""77f160c4-f0ed-42fb-9f03-0073a1000353"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -242,6 +251,28 @@ namespace Core.Input
                     ""action"": ""DoSwap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e71082a-ce0a-4dde-95a1-d353a7ade12f"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97806f57-21ba-48af-ad14-5b4dc1a01ee3"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -368,6 +399,7 @@ namespace Core.Input
             m_Game_Jump = m_Game.FindAction("Jump", throwIfNotFound: true);
             m_Game_SwapSelect = m_Game.FindAction("SwapSelect", throwIfNotFound: true);
             m_Game_DoSwap = m_Game.FindAction("DoSwap", throwIfNotFound: true);
+            m_Game_Attack = m_Game.FindAction("Attack", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Select = m_UI.FindAction("Select", throwIfNotFound: true);
@@ -437,6 +469,7 @@ namespace Core.Input
         private readonly InputAction m_Game_Jump;
         private readonly InputAction m_Game_SwapSelect;
         private readonly InputAction m_Game_DoSwap;
+        private readonly InputAction m_Game_Attack;
         public struct GameActions
         {
             private @BaseController m_Wrapper;
@@ -445,6 +478,7 @@ namespace Core.Input
             public InputAction @Jump => m_Wrapper.m_Game_Jump;
             public InputAction @SwapSelect => m_Wrapper.m_Game_SwapSelect;
             public InputAction @DoSwap => m_Wrapper.m_Game_DoSwap;
+            public InputAction @Attack => m_Wrapper.m_Game_Attack;
             public InputActionMap Get() { return m_Wrapper.m_Game; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -466,6 +500,9 @@ namespace Core.Input
                 @DoSwap.started += instance.OnDoSwap;
                 @DoSwap.performed += instance.OnDoSwap;
                 @DoSwap.canceled += instance.OnDoSwap;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
             }
 
             private void UnregisterCallbacks(IGameActions instance)
@@ -482,6 +519,9 @@ namespace Core.Input
                 @DoSwap.started -= instance.OnDoSwap;
                 @DoSwap.performed -= instance.OnDoSwap;
                 @DoSwap.canceled -= instance.OnDoSwap;
+                @Attack.started -= instance.OnAttack;
+                @Attack.performed -= instance.OnAttack;
+                @Attack.canceled -= instance.OnAttack;
             }
 
             public void RemoveCallbacks(IGameActions instance)
@@ -559,6 +599,7 @@ namespace Core.Input
             void OnJump(InputAction.CallbackContext context);
             void OnSwapSelect(InputAction.CallbackContext context);
             void OnDoSwap(InputAction.CallbackContext context);
+            void OnAttack(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
