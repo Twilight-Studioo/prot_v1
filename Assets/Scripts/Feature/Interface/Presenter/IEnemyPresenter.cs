@@ -9,9 +9,8 @@ namespace Feature.Interface.Presenter
         public void Pause();
 
         public void Resume();
-        
+
         // -- health
         public void TakeDamage(int damage);
-        
     }
 }

@@ -23,8 +23,8 @@ namespace Feature.Model
 
     public class SwapItemsModel
     {
-        private Guid currentId;
         private readonly List<SwapItem> swapItems;
+        private Guid currentId;
 
         public SwapItemsModel()
         {
@@ -46,6 +46,7 @@ namespace Feature.Model
                 {
                     currentId = Guid.Empty;
                 }
+
                 return found;
             });
         }
@@ -76,7 +77,6 @@ namespace Feature.Model
             var swapItem = swapItems[index];
             swapItem.Position = position;
             swapItems[index] = swapItem;
-
         }
 
         public void SetItem(Guid id)
@@ -88,7 +88,6 @@ namespace Feature.Model
 
             currentId = id;
         }
-
 #nullable enable
         public SwapItem? GetCurrentItem()
         {

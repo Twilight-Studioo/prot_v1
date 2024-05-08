@@ -1,4 +1,8 @@
+#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Feature.Common.Parameter
 {
@@ -9,5 +13,4 @@ namespace Feature.Common.Parameter
         public float bulletSpeed = 1f;
         public float destroyDelay = 2f;
     }
-
 }

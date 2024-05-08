@@ -1,3 +1,5 @@
+#region
+
 using System;
 using Core.Utilities;
 using Feature.Common.Parameter;
@@ -7,21 +9,22 @@ using Feature.Interface.View;
 using Feature.Model;
 using Feature.Views;
 using UniRx;
-using UnityEngine;
+
+#endregion
 
 namespace Feature.Presenter
 {
-    public class Enemy1Presenter: IEnemyPresenter
+    public class Enemy1Presenter : IEnemyPresenter
     {
-
         private readonly IEnemyModel enemyModel;
         private readonly EnemyViewBase enemyView;
         private readonly PlayerModel playerModel;
         private readonly SwapItemsPresenter swapItemsPresenter;
 
-        private CompositeDisposable disposable;
+        private readonly CompositeDisposable disposable;
 
-        private Enemy1Params param;
+        private readonly Enemy1Params param;
+
         public Enemy1Presenter(
             Enemy1Params param,
             EnemyViewBase enemyView,
@@ -43,12 +46,10 @@ namespace Feature.Presenter
             enemyView.Spawned();
             enemyModel.IsDead
                 .Select(x => x)
-                .Subscribe(_ => {
-                    enemyView.Dead();
-                })
+                .Subscribe(_ => { enemyView.Dead(); })
                 .AddTo(disposable);
             enemyModel.Position = enemyView.Position.ToReactiveProperty();
-            
+
 
             Observable
                 .Interval(TimeSpan.FromSeconds(param.attackIntervalSec))
@@ -85,12 +86,11 @@ namespace Feature.Presenter
 
         public void Pause()
         {
-            
         }
 
         public void Resume()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void TakeDamage(int damage)

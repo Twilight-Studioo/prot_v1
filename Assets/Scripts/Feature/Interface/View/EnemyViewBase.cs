@@ -1,16 +1,21 @@
+#region
+
 using System;
 using System.Collections;
 using UniRx;
 using UnityEngine;
 
+#endregion
+
 namespace Feature.Interface.View
 {
     [RequireComponent(typeof(SpriteRenderer))]
-    public abstract class EnemyViewBase: MonoBehaviour, IDisposable
+    public abstract class EnemyViewBase : MonoBehaviour, IDisposable
     {
-        private SpriteRenderer material;
-
         public readonly IReactiveProperty<Vector2> Position = new ReactiveProperty<Vector2>();
+
+        private bool isColorFix;
+        private SpriteRenderer material;
 
         private void Start()
         {
@@ -23,15 +28,13 @@ namespace Feature.Interface.View
             Position.Value = transform.position;
         }
 
+        public abstract void Dispose();
+
         public abstract void SetPosition(Vector2 position);
 
         public abstract void Dead();
 
         public abstract void Spawned();
-
-        public abstract void Dispose();
-
-        private bool isColorFix = false;
 
         public void OnDamage()
         {
@@ -49,10 +52,8 @@ namespace Feature.Interface.View
             isColorFix = true;
             yield return new WaitForSeconds(0.5f);
             material.color = Color.gray;
-
         }
 
         public abstract SwapItemViewBase GetItemInstance();
-
     }
 }

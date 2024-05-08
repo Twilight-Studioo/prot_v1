@@ -1,17 +1,17 @@
+#region
+
 using System;
 using Core.Utilities;
 using Feature.Interface.View;
 using UnityEngine;
 
+#endregion
+
 namespace Feature.Views
 {
-    public class EnemyView: EnemyViewBase
+    public class EnemyView : EnemyViewBase
     {
         [SerializeField] private GameObject bullet;
-        public override void SetPosition(Vector2 position)
-        {
-            transform.position = position;
-        }
 
         public void Awake()
         {
@@ -21,6 +21,11 @@ namespace Feature.Views
             }
         }
 
+        public override void SetPosition(Vector2 position)
+        {
+            transform.position = position;
+        }
+
         public override void Dead()
         {
             Destroy(this);
@@ -28,12 +33,10 @@ namespace Feature.Views
 
         public override void Spawned()
         {
-            
         }
 
         public override void Dispose()
         {
-            
         }
 
         public override SwapItemViewBase GetItemInstance()

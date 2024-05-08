@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using Core.Utilities;
@@ -7,6 +9,9 @@ using Feature.Model;
 using Feature.Presenter;
 using UnityEngine;
 using VContainer;
+using Object = UnityEngine.Object;
+
+#endregion
 
 namespace Main.Service
 {
@@ -17,13 +22,14 @@ namespace Main.Service
             Enemy1,
             Enemy2,
         }
+
         private readonly Enemy1Params enemy1Params;
         private readonly Enemy2Params enemy2Params;
 
         private readonly List<IEnemyPresenter> enemys;
         private readonly PlayerModel playerModel;
         private readonly SwapItemsPresenter swapItemsPresenter;
-        
+
         [Inject]
         public EnemySpawnService(
             Enemy1Params enemy1Params,
@@ -44,7 +50,7 @@ namespace Main.Service
             Vector3 position
         )
         {
-            switch(type)
+            switch (type)
             {
                 case EnemyType.Enemy1:
                     SpawnEnemy1(position);
@@ -56,7 +62,7 @@ namespace Main.Service
                     throw new ArgumentException($"Unsupported enemy type: {type}");
             }
         }
-        
+
         private void SpawnEnemy1(Vector3 position)
         {
             if (enemy1Params.prefab.IsNull())
@@ -68,7 +74,8 @@ namespace Main.Service
             {
                 return;
             }
-            var enemy = UnityEngine.Object.Instantiate(enemy1Params.View(), position, Quaternion.identity);
+
+            var enemy = Object.Instantiate(enemy1Params.View(), position, Quaternion.identity);
             if (enemy.IsNull())
             {
                 return;
@@ -77,7 +84,6 @@ namespace Main.Service
             var presenter = new Enemy1Presenter(enemy1Params, enemy, playerModel, swapItemsPresenter);
             enemys.Add(presenter);
             presenter.Spawned();
-            
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Feature.Presenter
             this.swapItemsModel = swapItemsModel;
             this.characterParams = characterParams;
             var list = Object.FindObjectsOfType<SwapItemView>().Cast<SwapItemViewBase>().ToList();
-            rememberItemPosition = new();   
+            rememberItemPosition = new();
             AddItems(list);
         }
 
@@ -59,7 +59,7 @@ namespace Feature.Presenter
                     .AddTo(rememberItemPosition);
                 return (id, item);
             }).ToList();
-        
+
             if (Enumerable.Any(dats, valueTuple => !swapItemViews.TryAdd(valueTuple.id, valueTuple.item)))
             {
                 throw new AlreadyAddedException(swapItemViews.ToString());
@@ -67,11 +67,11 @@ namespace Feature.Presenter
 
             swapItemsModel.AddItems(
                 dats.Select(data => new SwapItem
-                {
-                    Id = data.id,
-                    Position = data.item.Position.Value,
-                }
-            ).ToList());
+                    {
+                        Id = data.id,
+                        Position = data.item.Position.Value,
+                    }
+                ).ToList());
         }
 
         public void RemoveItems(List<SwapItemViewBase> items)

@@ -45,10 +45,8 @@ namespace Core.Utilities
             // IComparable<T>を実装していない場合は、デフォルトのnullチェック
             return item.Equals(null);
         }
-        
-        public static List<T> ToList<T>(this T value) {
-            return new() { value, };
-        }
+
+        public static List<T> ToList<T>(this T value) => new() { value, };
 
         public static T CoerceAtLeast<T>(T value, T min) where T : IComparable<T> =>
             value.CompareTo(min) < 0 ? min : value;

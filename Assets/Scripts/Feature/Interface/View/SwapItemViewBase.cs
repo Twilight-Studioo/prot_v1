@@ -1,22 +1,21 @@
+#region
+
 using System;
 using Core.Utilities;
 using UniRx;
 using UnityEngine;
 
+#endregion
+
 namespace Feature.Interface.View
 {
     [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
-    public abstract class SwapItemViewBase: MonoBehaviour, IDisposable
+    public abstract class SwapItemViewBase : MonoBehaviour, IDisposable
     {
-        [NonSerialized] protected bool IsActive;
-    
         [SerializeField] private SpriteRenderer material;
 
         public readonly IReactiveProperty<Vector2> Position = new ReactiveProperty<Vector2>();
-
-        public event Action OnDestroy;
-
-        protected event Action<Collider2D> OnTrigger;
+        [NonSerialized] protected bool IsActive;
 
         protected virtual void Start()
         {
@@ -27,6 +26,21 @@ namespace Feature.Interface.View
         {
             Position.Value = transform.position;
         }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            OnTrigger?.Invoke(other);
+        }
+
+        public virtual void Dispose()
+        {
+            OnDestroy = null;
+            OnTrigger = null;
+        }
+
+        public event Action OnDestroy;
+
+        protected event Action<Collider2D> OnTrigger;
 
         public void SetPosition(Vector2 position)
         {
@@ -42,17 +56,6 @@ namespace Feature.Interface.View
         {
             OnDestroy?.Invoke();
             this.DestroyGameObject();
-        }
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            OnTrigger?.Invoke(other);
-        }
-
-        public virtual void Dispose()
-        {
-            OnDestroy = null;
-            OnTrigger = null;
         }
     }
 }

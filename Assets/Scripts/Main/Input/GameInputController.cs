@@ -27,6 +27,8 @@ namespace Main.Input
         private readonly IPlayerPresenter playerPresenter;
         private readonly SwapController swapController;
 
+        private InputActionEvent attackAction;
+
         private InputActionEvent jumpAction;
 
         private InputActionEvent moveAction;
@@ -34,8 +36,6 @@ namespace Main.Input
         private InputActionEvent swapAction;
 
         private InputActionEvent swapSelectAction;
-
-        private InputActionEvent attackAction;
 
         [Inject]
         public GameInputController(
@@ -80,10 +80,7 @@ namespace Main.Input
 
             Observable.EveryUpdate()
                 .Where(_ => gameState.CanAttack())
-                .Subscribe(_ =>
-                {
-
-                });
+                .Subscribe(_ => { });
         }
 
         private void EnableJump()

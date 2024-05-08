@@ -1,14 +1,17 @@
+#region
+
 using System;
-using Core.Utilities;
 using Feature.Interface.View;
 using UniRx;
 using UnityEngine;
 
+#endregion
+
 namespace Feature.Views
 {
-    public class BulletSwapItemView: SwapItemViewBase
+    public class BulletSwapItemView : SwapItemViewBase
     {
-        private CompositeDisposable disposable = new();
+        private readonly CompositeDisposable disposable = new();
 
         protected override void Start()
         {
@@ -22,13 +25,11 @@ namespace Feature.Views
             {
                 Observable
                     .Timer(TimeSpan.FromSeconds(0.3f))
-                    .Subscribe(_ =>
-                    { 
-                        Despawn();
-                    })
+                    .Subscribe(_ => { Despawn(); })
                     .AddTo(this);
             }
         }
+
         public void ThrowStart(Vector2 position, Vector2 direction, float speed, float delay)
         {
             disposable.Clear();
@@ -39,17 +40,11 @@ namespace Feature.Views
                 .EveryFixedUpdate()
                 .Where(_ => IsActive)
                 .Select(_ => direction * 0.1f * speed)
-                .Subscribe(moveDistance =>
-                {
-                    transform.position += new Vector3(moveDistance.x, moveDistance.y);
-                })
+                .Subscribe(moveDistance => { transform.position += new Vector3(moveDistance.x, moveDistance.y); })
                 .AddTo(disposable);
             Observable
                 .Timer(TimeSpan.FromSeconds(delay))
-                .Subscribe(_ =>
-                {
-                    Despawn();
-                })
+                .Subscribe(_ => { Despawn(); })
                 .AddTo(this);
         }
 

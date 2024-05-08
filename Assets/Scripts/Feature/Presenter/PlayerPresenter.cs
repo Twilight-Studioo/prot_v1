@@ -69,6 +69,10 @@ namespace Feature.Presenter
             playerView.SetPosition(position);
         }
 
+        public void Attack()
+        {
+        }
+
         private void OnHit(Collider2D collider)
         {
             if (collider.CompareTag("Ground"))
@@ -76,11 +80,6 @@ namespace Feature.Presenter
                 DebugEx.LogDetailed("Grounded");
                 playerModel.SetStayGround(true);
             }
-        }
-
-        public void Attack()
-        {
-            
         }
     }
 }

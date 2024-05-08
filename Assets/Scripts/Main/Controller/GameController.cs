@@ -19,6 +19,7 @@ namespace Main.Controller
     /// </summary>
     public class GameController : IStartable
     {
+        private readonly EnemySpawnService enemySpawnService;
         private readonly GameInputController gameInputController;
         private readonly GameState gameState;
         private readonly GameUIPresenter gameUIPresenter;
@@ -27,7 +28,6 @@ namespace Main.Controller
         private readonly SwapController swapController;
         private readonly SwapItemsPresenter swapItemsPresenter;
         private readonly UserRepository userRepository;
-        private readonly EnemySpawnService enemySpawnService;
 
         [Inject]
         public GameController(
