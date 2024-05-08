@@ -8,7 +8,7 @@ using Feature.Presenter;
 using UnityEngine;
 using VContainer;
 
-namespace Service
+namespace Main.Service
 {
     public class EnemySpawnService
     {
@@ -22,17 +22,20 @@ namespace Service
 
         private readonly List<IEnemyPresenter> enemys;
         private readonly PlayerModel playerModel;
+        private readonly SwapItemsPresenter swapItemsPresenter;
         
         [Inject]
         public EnemySpawnService(
             Enemy1Params enemy1Params,
             Enemy2Params enemy2Params,
-            PlayerModel playerModel
+            PlayerModel playerModel,
+            SwapItemsPresenter swapItemsPresenter
         )
         {
             this.enemy1Params = enemy1Params;
             this.enemy2Params = enemy2Params;
             this.playerModel = playerModel;
+            this.swapItemsPresenter = swapItemsPresenter;
             enemys = new();
         }
 
@@ -71,7 +74,7 @@ namespace Service
                 return;
             }
 
-            var presenter = new Enemy1Presenter(enemy1Params, enemy, playerModel);
+            var presenter = new Enemy1Presenter(enemy1Params, enemy, playerModel, swapItemsPresenter);
             enemys.Add(presenter);
             presenter.Spawned();
             

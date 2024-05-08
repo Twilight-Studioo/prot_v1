@@ -1,12 +1,12 @@
 using System;
+using Core.Utilities;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Feature.Interface.View
 {
-    [RequireComponent(typeof(SpriteRenderer))]
-    public abstract class SwapItemViewBase: MonoBehaviour
+    [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D))]
+    public abstract class SwapItemViewBase: MonoBehaviour, IDisposable
     {
         [NonSerialized] protected bool IsActive;
     
@@ -16,7 +16,9 @@ namespace Feature.Interface.View
 
         public event Action OnDestroy;
 
-        private void Start()
+        protected event Action<Collider2D> OnTrigger;
+
+        protected virtual void Start()
         {
             IsActive = true;
         }
@@ -39,7 +41,18 @@ namespace Feature.Interface.View
         public void Delete()
         {
             OnDestroy?.Invoke();
-            Destroy(this);
+            this.DestroyGameObject();
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            OnTrigger?.Invoke(other);
+        }
+
+        public virtual void Dispose()
+        {
+            OnDestroy = null;
+            OnTrigger = null;
         }
     }
 }

@@ -1,5 +1,5 @@
 {
-    "name": "Service",
+    "name": "Main.Service",
     "rootNamespace": "",
     "references": [
         "GUID:6f70e8743437747c797f91eb8e1177bf",
@@ -10,8 +10,7 @@
         "GUID:c731d78473cf0475eb6c188fb4b2558a",
         "GUID:3fa25865ec7ac459685798241b4d0f9b",
         "GUID:46ccf25b230654c94912e93893660cd0",
-        "GUID:922e14bdd19a1499b972d3a4197d0c9c",
-        "GUID:bbd661940544e43a4a7c2d39ce5fa387"
+        "GUID:922e14bdd19a1499b972d3a4197d0c9c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

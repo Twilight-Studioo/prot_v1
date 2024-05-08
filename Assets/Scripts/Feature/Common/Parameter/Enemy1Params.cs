@@ -7,6 +7,7 @@ namespace Feature.Common.Parameter
     {
         public float attackIntervalSec = 4f;
         public float bulletSpeed = 1f;
+        public float destroyDelay = 2f;
     }
 
 }

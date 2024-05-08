@@ -17,3 +17,6 @@ MonoBehaviour:
   attackPower: 1
   attackType: 0
   prefab: {fileID: 2310864171918401007, guid: 8e0fedb287c1f4ba2ab1192c769e1437, type: 3}
+  attackIntervalSec: 4
+  bulletSpeed: 1
+  destroyDelay: 2

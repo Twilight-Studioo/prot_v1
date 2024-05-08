@@ -1,4 +1,5 @@
 using System;
+using Core.Utilities;
 using Feature.Common.Parameter;
 using Feature.Interface.Model;
 using Feature.Interface.Presenter;
@@ -16,6 +17,7 @@ namespace Feature.Presenter
         private readonly IEnemyModel enemyModel;
         private readonly EnemyViewBase enemyView;
         private readonly PlayerModel playerModel;
+        private readonly SwapItemsPresenter swapItemsPresenter;
 
         private CompositeDisposable disposable;
 
@@ -23,13 +25,15 @@ namespace Feature.Presenter
         public Enemy1Presenter(
             Enemy1Params param,
             EnemyViewBase enemyView,
-            PlayerModel playerModel
+            PlayerModel playerModel,
+            SwapItemsPresenter swapItemsPresenter
         )
         {
             this.param = param;
             enemyModel = new EnemyModel(param);
             this.enemyView = enemyView;
             this.playerModel = playerModel;
+            this.swapItemsPresenter = swapItemsPresenter;
             disposable = new();
         }
 
@@ -44,15 +48,30 @@ namespace Feature.Presenter
                 })
                 .AddTo(disposable);
             enemyModel.Position = enemyView.Position.ToReactiveProperty();
+            
+
             Observable
                 .Interval(TimeSpan.FromSeconds(param.attackIntervalSec))
                 .Subscribe(_ =>
                 {
                     var item = enemyView.GetItemInstance();
-                    if (item is BulletSwapItemView bullet)
+                    if (item is not BulletSwapItemView bullet)
                     {
-                        var dir = (playerModel.Position.Value - enemyModel.Position.Value).normalized;
-                        bullet.ThrowStart(enemyModel.Position.Value, dir, param.bulletSpeed);
+                        return;
+                    }
+
+                    var dir = (playerModel.Position.Value - enemyModel.Position.Value).normalized;
+                    swapItemsPresenter.AddItems(item.ToList());
+                    bullet.OnDestroy += BulletOnDead;
+
+                    bullet.ThrowStart(enemyModel.Position.Value, dir, param.bulletSpeed, param.destroyDelay);
+                    return;
+
+                    void BulletOnDead()
+                    {
+                        bullet.OnDestroy -= BulletOnDead;
+                        swapItemsPresenter.RemoveItems(item.ToList());
+                        bullet.DestroyGameObject();
                     }
                 })
                 .AddTo(disposable);

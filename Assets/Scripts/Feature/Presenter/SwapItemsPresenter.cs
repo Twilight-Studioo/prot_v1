@@ -3,7 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Utilities;
 using Feature.Common.Parameter;
+using Feature.Interface.View;
 using Feature.Model;
 using Feature.Views;
 using UniRx;
@@ -21,7 +23,7 @@ namespace Feature.Presenter
 
         private readonly CompositeDisposable rememberItemPosition;
         private readonly SwapItemsModel swapItemsModel;
-        private List<SwapItemView> swapItemViews;
+        private Dictionary<Guid, SwapItemViewBase> swapItemViews;
 
         [Inject]
         public SwapItemsPresenter(
@@ -31,9 +33,9 @@ namespace Feature.Presenter
         {
             this.swapItemsModel = swapItemsModel;
             this.characterParams = characterParams;
-            var list = Object.FindObjectsOfType<SwapItemView>().ToList();
-            rememberItemPosition = new();
-            SetItems(list);
+            var list = Object.FindObjectsOfType<SwapItemView>().Cast<SwapItemViewBase>().ToList();
+            rememberItemPosition = new();   
+            AddItems(list);
         }
 
         public void Dispose()
@@ -41,23 +43,50 @@ namespace Feature.Presenter
             rememberItemPosition.Clear();
         }
 
-        private void SetItems(List<SwapItemView> items)
+        public void AddItems(List<SwapItemViewBase> items)
+        {
+            if (swapItemViews.IsNull())
+            {
+                swapItemViews = new();
+            }
+
+            var dats = items.Select(item =>
+            {
+                var id = Guid.NewGuid();
+                item.SetHighlight(false);
+                item.Position
+                    .Subscribe(_ => { swapItemsModel.UpdateItemPosition(id, item.Position.Value); })
+                    .AddTo(rememberItemPosition);
+                return (id, item);
+            }).ToList();
+        
+            if (Enumerable.Any(dats, valueTuple => !swapItemViews.TryAdd(valueTuple.id, valueTuple.item)))
+            {
+                throw new AlreadyAddedException(swapItemViews.ToString());
+            }
+
+            swapItemsModel.AddItems(
+                dats.Select(data => new SwapItem
+                {
+                    Id = data.id,
+                    Position = data.item.Position.Value,
+                }
+            ).ToList());
+        }
+
+        public void RemoveItems(List<SwapItemViewBase> items)
+        {
+            foreach (var swapItemViewBase in items)
+            {
+                var found = swapItemViews.First(x => x.Value == swapItemViewBase);
+                swapItemsModel.RemoveItem(found.Key);
+                swapItemViews.Remove(found.Key);
+            }
+        }
+
+        public void Clear()
         {
             rememberItemPosition.Clear();
-            swapItemViews = items
-                .Select((item, index) =>
-                    {
-                        item.SetHighlight(false);
-                        item.Position
-                            .Subscribe(_ => { swapItemsModel.UpdateItemPosition(index, item.Position.Value); })
-                            .AddTo(rememberItemPosition);
-                        return item;
-                    }
-                )
-                .ToList();
-            swapItemsModel.SetItems(
-                swapItemViews.Select(view => view.transform.position).ToList()
-            );
         }
 
         public void ResetSelector()
@@ -83,10 +112,10 @@ namespace Feature.Presenter
             swapItemsModel.SetItem(select.Value.Id);
         }
 
-        public SwapItemView SelectItem()
+        public SwapItemViewBase SelectItem()
         {
             var item = swapItemsModel.GetCurrentItem();
-            if (!item.HasValue || item.Value.Id < 0 || item.Value.Id >= swapItemViews.Count)
+            if (!item.HasValue || item.Value.Id == Guid.Empty)
             {
                 return null;
             }
