@@ -21,6 +21,8 @@ namespace Feature.Presenter
         private readonly PlayerModel playerModel;
         private readonly PlayerView playerView;
 
+        private int previousHealth;
+
         [Inject]
         public PlayerPresenter(
             PlayerView playerView,
@@ -61,6 +63,14 @@ namespace Feature.Presenter
             playerView.Position
                 .DistinctUntilChanged()
                 .Subscribe(x => { playerModel.SetPosition(x); });
+            previousHealth = playerModel.Health.Value;
+            playerModel.Health
+                .DistinctUntilChanged()
+                .Where(x => x < previousHealth)
+                .Subscribe(_ =>
+                {
+                    playerView.StartHighLight(0.3f);
+                });
             playerModel.IsDead
                 .Where(x => x)
                 .Subscribe(_ => { DebugEx.LogDetailed("Player Dead"); });
@@ -82,7 +92,6 @@ namespace Feature.Presenter
         {
             if (collider.CompareTag("Ground"))
             {
-                DebugEx.LogDetailed("Grounded");
                 playerModel.SetStayGround(true);
             }
         }

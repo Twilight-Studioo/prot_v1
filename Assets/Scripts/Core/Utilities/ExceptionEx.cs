@@ -12,4 +12,11 @@ namespace Core.Utilities
         {
         }
     }
+    
+    public class NoAttachedException : Exception
+    {
+        public NoAttachedException(string message) : base(message)
+        {
+        }
+    }
 }
