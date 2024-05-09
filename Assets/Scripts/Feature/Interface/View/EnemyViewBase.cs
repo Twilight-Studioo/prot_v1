@@ -23,7 +23,7 @@ namespace Feature.Interface.View
             material.color = Color.gray;
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             Position.Value = transform.position;
         }

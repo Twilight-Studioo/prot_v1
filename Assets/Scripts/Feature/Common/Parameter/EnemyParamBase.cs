@@ -13,7 +13,7 @@ namespace Feature.Common.Parameter
 
         [Range(0.1f, 10.0f)] public float speed = 1f;
 
-        [Range(0.1f, 100.0f)] public float attackPower = 1f;
+        [Range(1, ushort.MaxValue)] public ushort attackDamage = 1;
 
         public EnemyAttackType attackType = EnemyAttackType.Default;
 

@@ -23,13 +23,13 @@ namespace Feature.Model
         {
             this.characterParams = characterParams;
 
-            Health = new ReactiveProperty<ushort>(100);
+            Health = new ReactiveProperty<int>(characterParams.health);
             StayGround = new ReactiveProperty<bool>(true);
             IsDead = Health.Select(x => x <= 0).ToReadOnlyReactiveProperty();
             Position = new ReactiveProperty<Vector2>(Vector2.zero);
         }
 
-        public IReactiveProperty<ushort> Health { get; }
+        public IReactiveProperty<int> Health { get; }
 
         public ReadOnlyReactiveProperty<bool> IsDead { get; private set; }
 

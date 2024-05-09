@@ -13,7 +13,7 @@ namespace Feature.Views
     {
         [SerializeField] private GameObject bullet;
 
-        public void Awake()
+        private void Awake()
         {
             if (bullet.IsNull())
             {
@@ -28,7 +28,7 @@ namespace Feature.Views
 
         public override void Dead()
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
 
         public override void Spawned()

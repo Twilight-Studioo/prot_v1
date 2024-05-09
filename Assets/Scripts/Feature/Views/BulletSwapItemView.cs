@@ -1,6 +1,7 @@
 #region
 
 using System;
+using Core.Utilities;
 using Feature.Interface.View;
 using UniRx;
 using UnityEngine;
@@ -19,8 +20,15 @@ namespace Feature.Views
             OnTrigger += OnTriggered;
         }
 
+        public event Action<GameObject> OnTriggeredPlayer;
+
         private void OnTriggered(Collider2D other)
         {
+            if (other.CompareTag("Player"))
+            {
+                OnTriggeredPlayer?.Invoke(other.gameObject);
+            }
+
             if (other.CompareTag("Ground"))
             {
                 Observable
@@ -33,7 +41,7 @@ namespace Feature.Views
         public void ThrowStart(Vector2 position, Vector2 direction, float speed, float delay)
         {
             disposable.Clear();
-            transform.position = position;
+            transform.position = new(position.x, position.y, SysEx.Unity.ZIndex.Item);
             var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
             transform.rotation = Quaternion.Euler(0, 0, angle);
             Observable
@@ -48,7 +56,7 @@ namespace Feature.Views
                 .AddTo(this);
         }
 
-        private void Despawn()
+        public void Despawn()
         {
             disposable.Clear();
             Delete();
@@ -57,8 +65,9 @@ namespace Feature.Views
 
         public override void Dispose()
         {
-            base.Dispose();
             disposable.Dispose();
+            OnTriggeredPlayer = null;
+            base.Dispose();
         }
     }
 }

@@ -1,5 +1,6 @@
 #region
 
+using System;
 using Core.Utilities;
 using Feature.Interface.Presenter;
 using Feature.Model;
@@ -60,6 +61,9 @@ namespace Feature.Presenter
             playerView.Position
                 .DistinctUntilChanged()
                 .Subscribe(x => { playerModel.SetPosition(x); });
+            playerModel.IsDead
+                .Where(x => x)
+                .Subscribe(_ => { DebugEx.LogDetailed("Player Dead"); });
         }
 
         public Vector2 GetPosition() => playerModel.Position.Value;
@@ -69,8 +73,9 @@ namespace Feature.Presenter
             playerView.SetPosition(position);
         }
 
-        public void Attack()
+        public void Attack(ushort damage)
         {
+            playerModel.Damage(damage);
         }
 
         private void OnHit(Collider2D collider)
