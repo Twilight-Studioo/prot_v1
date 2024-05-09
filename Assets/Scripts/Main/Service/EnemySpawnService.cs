@@ -23,10 +23,10 @@ namespace Main.Service
             Enemy2,
         }
 
+        private readonly List<IEnemyPresenter> enemies;
+
         private readonly Enemy1Params enemy1Params;
         private readonly Enemy2Params enemy2Params;
-
-        private readonly List<IEnemyPresenter> enemies;
         private readonly PlayerModel playerModel;
         private readonly SwapItemsPresenter swapItemsPresenter;
 

@@ -16,14 +16,13 @@ namespace Feature.Views
     [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
     public class PlayerView : MonoBehaviour
     {
+        private CompositeDisposable highLightDisposable;
         private Vector2 pendingForce = Vector2.zero;
 
         //    private Vector2? pendingPosition = null;
         private Vector2? pendingVelocity;
         private Rigidbody2D rigidBody2d;
         private SpriteRenderer spriteRenderer;
-
-        private CompositeDisposable highLightDisposable;
 
         public IReactiveProperty<Vector2> Position { get; private set; }
 
@@ -72,6 +71,12 @@ namespace Feature.Views
             OnHit?.Invoke(other.collider);
         }
 
+        private void OnDrawGizmos()
+        {
+            // Gizmos 用の描画を呼び出す
+            RaycastEx.DrawGizmos();
+        }
+
         /// <summary>
         ///     colliderに当たった時のイベント通知
         /// </summary>
@@ -117,13 +122,6 @@ namespace Feature.Views
             Observable.Timer(TimeSpan.FromSeconds(delaySec))
                 .Subscribe(__ => { spriteRenderer.color = Color.white; })
                 .AddTo(highLightDisposable);
-            
-        }
-        
-        private void OnDrawGizmos()
-        {
-            // Gizmos 用の描画を呼び出す
-            RaycastEx.DrawGizmos();
         }
     }
 }

@@ -1,6 +1,5 @@
 #region
 
-using Core.Utilities;
 using Feature.Common.Parameter;
 using UniRx;
 using UnityEngine;
@@ -16,6 +15,8 @@ namespace Feature.Model
     public class PlayerModel
     {
         private readonly CharacterParams characterParams;
+
+        public Vector2 Forward;
 
         [Inject]
         public PlayerModel(
@@ -39,8 +40,6 @@ namespace Feature.Model
         public float Speed => characterParams.speed;
 
         public float JumpPower => characterParams.jumpPower;
-
-        public Vector2 Forward;
 
         public int AttackPower => characterParams.attackPower;
 

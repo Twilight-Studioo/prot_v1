@@ -86,7 +86,7 @@ namespace Main.Input
                 {
                     if (x)
                     {
-                        playerPresenter.AttackForward();   
+                        playerPresenter.AttackForward();
                     }
                 });
         }

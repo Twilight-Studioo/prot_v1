@@ -69,10 +69,7 @@ namespace Feature.Presenter
             playerModel.Health
                 .DistinctUntilChanged()
                 .Where(x => x < previousHealth)
-                .Subscribe(_ =>
-                {
-                    playerView.StartHighLight(0.3f);
-                });
+                .Subscribe(_ => { playerView.StartHighLight(0.3f); });
             playerModel.IsDead
                 .Where(x => x)
                 .Subscribe(_ => { DebugEx.LogDetailed("Player Dead"); });
@@ -88,8 +85,11 @@ namespace Feature.Presenter
         public void AttackForward()
         {
             List<GameObject> hits = new();
-            if (!RaycastEx.FindObjectWithPosition(playerModel.AttachPoint(), 1f, ref hits)) return;
-            
+            if (!RaycastEx.FindObjectWithPosition(playerModel.AttachPoint(), 1f, ref hits))
+            {
+                return;
+            }
+
             foreach (var gameObject in hits)
             {
                 var enemy = gameObject.GetComponent<EnemyViewBase>();

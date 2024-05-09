@@ -1,7 +1,6 @@
 #region
 
 using System;
-using System.Collections;
 using UniRx;
 using UnityEngine;
 
@@ -13,11 +12,9 @@ namespace Feature.Interface.View
     public abstract class EnemyViewBase : MonoBehaviour, IDisposable
     {
         public readonly IReactiveProperty<Vector2> Position = new ReactiveProperty<Vector2>();
-    
-        private SpriteRenderer material;
-
-        public event Action<int> OnDamage;
         private CompositeDisposable damageDisposable;
+
+        private SpriteRenderer material;
 
         private void Start()
         {
@@ -35,6 +32,8 @@ namespace Feature.Interface.View
         {
             damageDisposable.Dispose();
         }
+
+        public event Action<int> OnDamage;
 
         public abstract void SetPosition(Vector2 position);
 
@@ -54,10 +53,7 @@ namespace Feature.Interface.View
             material.color = Color.red;
             Observable
                 .Timer(TimeSpan.FromSeconds(0.3f))
-                .Subscribe(_ =>
-                {
-                    material.color = Color.gray;
-                })
+                .Subscribe(_ => { material.color = Color.gray; })
                 .AddTo(damageDisposable);
             OnDamage?.Invoke(damage);
         }

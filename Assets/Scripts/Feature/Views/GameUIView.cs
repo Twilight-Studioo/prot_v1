@@ -1,6 +1,5 @@
 #region
 
-using System;
 using Core.Utilities;
 using UnityEngine;
 using UnityEngine.UI;

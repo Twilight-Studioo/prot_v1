@@ -10,6 +10,9 @@ namespace Core.Utilities
 {
     public static class RaycastEx
     {
+        private static Vector2 lastOrigin;
+        private static float lastPointSize;
+
         /// <summary>
         ///     指定オブジェクトの下方向に指定距離内に他のオブジェクトが存在するかどうかを判定します。
         /// </summary>
@@ -38,9 +41,6 @@ namespace Core.Utilities
             return false;
         }
 
-        private static Vector2 lastOrigin;
-        private static float lastPointSize;
-
         public static bool FindObjectWithPosition(Vector2 origin, float pointSize, ref List<GameObject> result)
         {
             // Initialize the result list
@@ -67,9 +67,8 @@ namespace Core.Utilities
             result.AddRange(colliders.Where(collider => collider != null).Select(collider => collider.gameObject));
 
             return true;
-
         }
-        
+
         public static void DrawGizmos()
         {
             Gizmos.color = Color.red;

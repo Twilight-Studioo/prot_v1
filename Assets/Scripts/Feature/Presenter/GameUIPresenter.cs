@@ -13,8 +13,8 @@ namespace Feature.Presenter
     public class GameUIPresenter
     {
         private readonly GameUIView gameUIView;
-        private readonly PlayerModel playerModel;
         private readonly CharacterParams param;
+        private readonly PlayerModel playerModel;
 
         [Inject]
         public GameUIPresenter(
@@ -32,18 +32,12 @@ namespace Feature.Presenter
         {
             playerModel.Position
                 .DistinctUntilChanged()
-                .Subscribe(pos =>
-                    {
-                        gameUIView.SetCameraPosition(new(pos.x, pos.y + 2, -10));
-                    }
+                .Subscribe(pos => { gameUIView.SetCameraPosition(new(pos.x, pos.y + 2, -10)); }
                 );
             gameUIView.SetHealthRange(0, param.health);
             playerModel.Health
                 .DistinctUntilChanged()
-                .Subscribe(x =>
-                {
-                    gameUIView.SetHealth(x);
-                });
+                .Subscribe(x => { gameUIView.SetHealth(x); });
         }
     }
 }
