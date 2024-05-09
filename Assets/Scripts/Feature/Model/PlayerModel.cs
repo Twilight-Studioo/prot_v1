@@ -1,5 +1,6 @@
 #region
 
+using Core.Utilities;
 using Feature.Common.Parameter;
 using UniRx;
 using UnityEngine;
@@ -39,6 +40,10 @@ namespace Feature.Model
 
         public float JumpPower => characterParams.jumpPower;
 
+        public Vector2 Forward;
+
+        public int AttackPower => characterParams.attackPower;
+
         public IReactiveProperty<Vector2> Position { get; }
 
         public void SetStayGround(bool stayGround)
@@ -51,6 +56,11 @@ namespace Feature.Model
             Position.Value = position;
         }
 
+        public void SetDirection(Vector2 forward)
+        {
+            Forward = forward.x > 0 ? Vector2.right : Vector2.left;
+        }
+
         public int SetHealth(ushort health)
         {
             Health.Value = health;
@@ -61,5 +71,7 @@ namespace Feature.Model
         {
             Health.Value -= damage;
         }
+
+        public Vector2 AttachPoint() => Position.Value + Forward * 1.5f;
     }
 }

@@ -1,6 +1,7 @@
 #region
 
 using System;
+using Core.Utilities;
 using UniRx;
 using UnityEngine;
 
@@ -117,6 +118,12 @@ namespace Feature.Views
                 .Subscribe(__ => { spriteRenderer.color = Color.white; })
                 .AddTo(highLightDisposable);
             
+        }
+        
+        private void OnDrawGizmos()
+        {
+            // Gizmos 用の描画を呼び出す
+            RaycastEx.DrawGizmos();
         }
     }
 }

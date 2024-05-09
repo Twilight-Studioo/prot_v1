@@ -25,5 +25,7 @@ namespace Feature.Common.Parameter
         public float afterSwappedTimeSec = 0.5f;
 
         public float inSwapTimeScale = 0.3f;
+
+        public int attackPower = 10;
     }
 }

@@ -41,12 +41,20 @@ namespace Feature.Presenter
         }
 
 
+        public event Action OnDead;
+
         public void Spawned()
         {
             enemyView.Spawned();
+            enemyView.OnDamage += TakeDamage;
             enemyModel.IsDead
                 .Where(x => x)
-                .Subscribe(_ => { enemyView.Dead(); })
+                .Subscribe(_ =>
+                {
+                    enemyView.Dead();
+                    Death();
+                    OnDead?.Invoke();
+                })
                 .AddTo(disposable);
             enemyModel.Position = enemyView.Position.ToReactiveProperty();
 
@@ -102,7 +110,6 @@ namespace Feature.Presenter
         public void TakeDamage(int damage)
         {
             enemyModel.Health.Value = (uint)(enemyModel.Health.Value - damage);
-            enemyView.OnDamage();
         }
     }
 }

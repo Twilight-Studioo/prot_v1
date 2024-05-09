@@ -26,7 +26,7 @@ namespace Main.Service
         private readonly Enemy1Params enemy1Params;
         private readonly Enemy2Params enemy2Params;
 
-        private readonly List<IEnemyPresenter> enemys;
+        private readonly List<IEnemyPresenter> enemies;
         private readonly PlayerModel playerModel;
         private readonly SwapItemsPresenter swapItemsPresenter;
 
@@ -42,7 +42,7 @@ namespace Main.Service
             this.enemy2Params = enemy2Params;
             this.playerModel = playerModel;
             this.swapItemsPresenter = swapItemsPresenter;
-            enemys = new();
+            enemies = new();
         }
 
         public void Spawn(
@@ -82,7 +82,12 @@ namespace Main.Service
             }
 
             var presenter = new Enemy1Presenter(enemy1Params, enemy, playerModel, swapItemsPresenter);
-            enemys.Add(presenter);
+            presenter.OnDead += () =>
+            {
+                enemies.Remove(presenter);
+                Spawn(EnemyType.Enemy1, playerModel.Position.Value);
+            };
+            enemies.Add(presenter);
             presenter.Spawned();
         }
     }

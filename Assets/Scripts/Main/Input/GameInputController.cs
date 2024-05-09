@@ -80,7 +80,15 @@ namespace Main.Input
 
             Observable.EveryUpdate()
                 .Where(_ => gameState.CanAttack())
-                .Subscribe(_ => { });
+                .Select(_ => attackAction.ReadValue<float>() > 0f)
+                .DistinctUntilChanged()
+                .Subscribe(x =>
+                {
+                    if (x)
+                    {
+                        playerPresenter.AttackForward();   
+                    }
+                });
         }
 
         private void EnableJump()

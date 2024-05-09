@@ -1,8 +1,9 @@
 #region
 
-using System;
+using System.Collections.Generic;
 using Core.Utilities;
 using Feature.Interface.Presenter;
+using Feature.Interface.View;
 using Feature.Model;
 using Feature.Views;
 using UniRx;
@@ -37,6 +38,7 @@ namespace Feature.Presenter
 
         public void OnMove(Vector2 vector)
         {
+            playerModel.SetDirection(vector);
             if (playerModel.StayGround.Value)
             {
                 playerView.SetVelocity(new Vector2(vector.x, 0f) * 5f * playerModel.Speed);
@@ -83,9 +85,19 @@ namespace Feature.Presenter
             playerView.SetPosition(position);
         }
 
-        public void Attack(ushort damage)
+        public void AttackForward()
         {
-            playerModel.Damage(damage);
+            List<GameObject> hits = new();
+            if (!RaycastEx.FindObjectWithPosition(playerModel.AttachPoint(), 1f, ref hits)) return;
+            
+            foreach (var gameObject in hits)
+            {
+                var enemy = gameObject.GetComponent<EnemyViewBase>();
+                if (!enemy.IsNull())
+                {
+                    enemy.OnTakeDamage(playerModel.AttackPower);
+                }
+            }
         }
 
         private void OnHit(Collider2D collider)

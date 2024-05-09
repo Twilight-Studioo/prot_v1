@@ -26,6 +26,6 @@ namespace Feature.Interface.Presenter
 
         public void SetPosition(Vector2 position);
 
-        public void Attack(ushort damage);
+        public void AttackForward();
     }
 }

@@ -28,6 +28,7 @@ namespace Feature.Views
 
         public override void Dead()
         {
+            base.Dead();
             Destroy(gameObject);
         }
 
@@ -35,9 +36,6 @@ namespace Feature.Views
         {
         }
 
-        public override void Dispose()
-        {
-        }
 
         public override SwapItemViewBase GetItemInstance()
         {
