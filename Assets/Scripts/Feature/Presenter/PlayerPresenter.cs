@@ -1,7 +1,9 @@
 #region
 
+using System.Collections.Generic;
 using Core.Utilities;
 using Feature.Interface.Presenter;
+using Feature.Interface.View;
 using Feature.Model;
 using Feature.Views;
 using UniRx;
@@ -20,6 +22,8 @@ namespace Feature.Presenter
         private readonly PlayerModel playerModel;
         private readonly PlayerView playerView;
 
+        private int previousHealth;
+
         [Inject]
         public PlayerPresenter(
             PlayerView playerView,
@@ -34,6 +38,7 @@ namespace Feature.Presenter
 
         public void OnMove(Vector2 vector)
         {
+            playerModel.SetDirection(vector);
             if (playerModel.StayGround.Value)
             {
                 playerView.SetVelocity(new Vector2(vector.x, 0f) * 5f * playerModel.Speed);
@@ -60,6 +65,14 @@ namespace Feature.Presenter
             playerView.Position
                 .DistinctUntilChanged()
                 .Subscribe(x => { playerModel.SetPosition(x); });
+            previousHealth = playerModel.Health.Value;
+            playerModel.Health
+                .DistinctUntilChanged()
+                .Where(x => x < previousHealth)
+                .Subscribe(_ => { playerView.StartHighLight(0.3f); });
+            playerModel.IsDead
+                .Where(x => x)
+                .Subscribe(_ => { DebugEx.LogDetailed("Player Dead"); });
         }
 
         public Vector2 GetPosition() => playerModel.Position.Value;
@@ -69,11 +82,28 @@ namespace Feature.Presenter
             playerView.SetPosition(position);
         }
 
+        public void AttackForward()
+        {
+            List<GameObject> hits = new();
+            if (!RaycastEx.FindObjectWithPosition(playerModel.AttachPoint(), 1f, ref hits))
+            {
+                return;
+            }
+
+            foreach (var gameObject in hits)
+            {
+                var enemy = gameObject.GetComponent<EnemyViewBase>();
+                if (!enemy.IsNull())
+                {
+                    enemy.OnTakeDamage(playerModel.AttackPower);
+                }
+            }
+        }
+
         private void OnHit(Collider2D collider)
         {
             if (collider.CompareTag("Ground"))
             {
-                DebugEx.LogDetailed("Grounded");
                 playerModel.SetStayGround(true);
             }
         }

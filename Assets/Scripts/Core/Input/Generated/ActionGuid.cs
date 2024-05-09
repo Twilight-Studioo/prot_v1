@@ -20,6 +20,7 @@ namespace Core.Input
        public static readonly Guid Jump = new Guid("cac06a68-f0ac-4ff3-bdfa-b7c805d9161f");
        public static readonly Guid SwapSelect = new Guid("226589b0-d7eb-4f03-b210-964a33b50ed5");
        public static readonly Guid DoSwap = new Guid("dcc946f8-cc49-4206-9ced-f4b06fbdd7a2");
+       public static readonly Guid Attack = new Guid("77f160c4-f0ed-42fb-9f03-0073a1000353");
     }
 
 

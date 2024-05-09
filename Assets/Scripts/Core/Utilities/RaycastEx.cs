@@ -1,5 +1,7 @@
 #region
 
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 #endregion
@@ -8,6 +10,9 @@ namespace Core.Utilities
 {
     public static class RaycastEx
     {
+        private static Vector2 lastOrigin;
+        private static float lastPointSize;
+
         /// <summary>
         ///     指定オブジェクトの下方向に指定距離内に他のオブジェクトが存在するかどうかを判定します。
         /// </summary>
@@ -34,6 +39,40 @@ namespace Core.Utilities
 
             // Raycastが当たらない場合は、地面が存在しないと判定
             return false;
+        }
+
+        public static bool FindObjectWithPosition(Vector2 origin, float pointSize, ref List<GameObject> result)
+        {
+            // Initialize the result list
+            if (result == null)
+            {
+                result = new();
+            }
+            else
+            {
+                result.Clear(); // Clear the list to remove any old data
+            }
+
+            lastOrigin = origin;
+            lastPointSize = pointSize;
+            // Find all colliders at the specified position within the given radius
+            var colliders = Physics2D.OverlapCircleAll(origin, pointSize);
+
+            if (colliders.Length == 0)
+            {
+                return false;
+            }
+
+            // Add all objects found at the position to the result list
+            result.AddRange(colliders.Where(collider => collider != null).Select(collider => collider.gameObject));
+
+            return true;
+        }
+
+        public static void DrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(lastOrigin, lastPointSize);
         }
     }
 }

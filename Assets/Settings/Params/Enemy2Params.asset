@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e4732f6f53e47319744e9ad390e5a17, type: 3}
-  m_Name: CharacterParams
+  m_Script: {fileID: 11500000, guid: 6ea1e37380564ff2a477ba38874e66d8, type: 3}
+  m_Name: Enemy2Params
   m_EditorClassIdentifier: 
+  health: 100
   speed: 1
-  jumpPower: 1
-  swapTimeSec: 3
-  canSwapDistance: 40
-  afterSwappedTimeSec: 0.5
-  inSwapTimeScale: 0.3
+  attackPower: 1
+  attackType: 0
+  prefab: {fileID: 2310864171918401007, guid: 8e0fedb287c1f4ba2ab1192c769e1437, type: 3}

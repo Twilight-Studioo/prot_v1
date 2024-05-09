@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using UnityEngine;
 using Object = UnityEngine.Object;
+using Random = System.Random;
 
 #endregion
 
@@ -43,6 +45,8 @@ namespace Core.Utilities
             // IComparable<T>を実装していない場合は、デフォルトのnullチェック
             return item.Equals(null);
         }
+
+        public static List<T> ToList<T>(this T value) => new() { value, };
 
         public static T CoerceAtLeast<T>(T value, T min) where T : IComparable<T> =>
             value.CompareTo(min) < 0 ? min : value;
@@ -95,7 +99,7 @@ namespace Core.Utilities
         public static IEnumerable<T> TakeLast<T>(IEnumerable<T> source, int count)
         {
             var enumerable = source.ToList();
-            return enumerable.Skip(Math.Max(0, enumerable.Count() - count));
+            return (IEnumerable<T>)enumerable.Skip(Math.Max(0, enumerable.Count() - count));
         }
 
         public static IEnumerable<T> Drop<T>(IEnumerable<T> source, int count) => source.Skip(count);
@@ -186,7 +190,7 @@ namespace Core.Utilities
         public static void Deconstruct<T>(this IList<T> list, out T first, out IList<T> rest)
         {
             first = list.Count > 0 ? list[0] : default;
-            rest = list.Skip(1).ToList();
+            rest = (IList<T>)list.Skip(1).ToList();
         }
 
         public static IDictionary<TKey, TValue> ToDictionary<TKey, TValue>(
@@ -229,7 +233,7 @@ namespace Core.Utilities
             var enumerable = source.ToList();
             if (enumerable.Count > index)
             {
-                return enumerable.ElementAt(index);
+                return (T)enumerable.ElementAt(index);
             }
 
             return null;
@@ -263,6 +267,11 @@ namespace Core.Utilities
             }
 
             return -1;
+        }
+
+        public static void DestroyGameObject<T>(this T source) where T : MonoBehaviour
+        {
+            Object.Destroy(source.gameObject);
         }
     }
 }

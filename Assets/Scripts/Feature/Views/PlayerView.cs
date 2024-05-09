@@ -1,6 +1,7 @@
 #region
 
 using System;
+using Core.Utilities;
 using UniRx;
 using UnityEngine;
 
@@ -12,21 +13,30 @@ namespace Feature.Views
     ///     プレイヤーのView
     ///     具体的な操作はPresenterに任せる(ここでは何もしない)
     /// </summary>
-    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
     public class PlayerView : MonoBehaviour
     {
+        private CompositeDisposable highLightDisposable;
         private Vector2 pendingForce = Vector2.zero;
 
         //    private Vector2? pendingPosition = null;
         private Vector2? pendingVelocity;
         private Rigidbody2D rigidBody2d;
+        private SpriteRenderer spriteRenderer;
 
         public IReactiveProperty<Vector2> Position { get; private set; }
 
         private void Awake()
         {
-            rigidBody2d = GetComponent<Rigidbody2D>();
             Position = new ReactiveProperty<Vector2>(transform.position);
+            highLightDisposable = new();
+        }
+
+        private void Start()
+        {
+            rigidBody2d = GetComponent<Rigidbody2D>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.color = Color.white;
         }
 
         private void Update()
@@ -59,6 +69,12 @@ namespace Feature.Views
         private void OnCollisionEnter2D(Collision2D other)
         {
             OnHit?.Invoke(other.collider);
+        }
+
+        private void OnDrawGizmos()
+        {
+            // Gizmos 用の描画を呼び出す
+            RaycastEx.DrawGizmos();
         }
 
         /// <summary>
@@ -97,6 +113,15 @@ namespace Feature.Views
         public void MovePosition(Vector2 position)
         {
             rigidBody2d.MovePosition(position);
+        }
+
+        public void StartHighLight(float delaySec)
+        {
+            highLightDisposable.Clear();
+            spriteRenderer.color = Color.red;
+            Observable.Timer(TimeSpan.FromSeconds(delaySec))
+                .Subscribe(__ => { spriteRenderer.color = Color.white; })
+                .AddTo(highLightDisposable);
         }
     }
 }

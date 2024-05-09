@@ -25,5 +25,7 @@ namespace Feature.Interface.Presenter
         public Vector2 GetPosition();
 
         public void SetPosition(Vector2 position);
+
+        public void AttackForward();
     }
 }

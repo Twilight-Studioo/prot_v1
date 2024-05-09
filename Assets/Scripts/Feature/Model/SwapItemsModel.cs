@@ -11,71 +11,92 @@ namespace Feature.Model
 {
     public struct SwapItem
     {
-        public int Id;
+        public Guid Id;
         public Vector3 Position;
+
+        public SwapItem(Guid id, Vector3 position)
+        {
+            Id = id;
+            Position = position;
+        }
     }
 
     public class SwapItemsModel
     {
-        private int currentId;
-        private List<SwapItem> swapItems;
+        private readonly List<SwapItem> swapItems;
+        private Guid currentId;
 
         public SwapItemsModel()
         {
             swapItems = new();
-            currentId = -1;
+            currentId = Guid.Empty;
         }
 
-        public void SetItems(List<Vector3> items)
+        public void AddItems(List<SwapItem> items)
         {
-            swapItems = items
-                .Select((item, index) =>
-                    new SwapItem
-                    {
-                        Id = index,
-                        Position = item,
-                    }
-                ).ToList();
+            swapItems.AddRange(items);
+        }
+
+        public void RemoveItems(Predicate<Guid> match)
+        {
+            swapItems.RemoveAll(item =>
+            {
+                var found = match(item.Id);
+                if (found && item.Id == currentId)
+                {
+                    currentId = Guid.Empty;
+                }
+
+                return found;
+            });
+        }
+
+        public void RemoveItem(Guid id)
+        {
+            swapItems.RemoveAll(item => item.Id == id);
         }
 
         public void ResetSelector()
         {
-            currentId = -1;
+            currentId = Guid.Empty;
         }
 
-        public void UpdateItemPosition(int id, Vector3 position)
+        public void UpdateItemPosition(Guid id, Vector3 position)
         {
-            if (id < 0 || id >= swapItems.Count)
+            if (id == Guid.Empty)
             {
                 return;
             }
 
-            swapItems[id] = new()
+            var index = swapItems.FindIndex(x => x.Id == id);
+            if (index < 0 || index >= swapItems.Count)
             {
-                Id = id,
-                Position = position,
-            };
+                return;
+            }
+
+            var swapItem = swapItems[index];
+            swapItem.Position = position;
+            swapItems[index] = swapItem;
         }
 
-        public void SetItem(int id)
+        public void SetItem(Guid id)
         {
-            if (id < 0 || id >= swapItems.Count)
+            if (id == Guid.Empty)
             {
                 return;
             }
 
             currentId = id;
         }
-
 #nullable enable
         public SwapItem? GetCurrentItem()
         {
-            if (currentId < 0 || currentId >= swapItems.Count)
+            if (currentId == Guid.Empty)
             {
                 return null;
             }
 
-            return swapItems[currentId];
+            return swapItems.First(x => x.Id == currentId);
         }
 
         /// <summary>
@@ -89,7 +110,7 @@ namespace Feature.Model
         {
             var nearestItem = GetCurrentItem();
             var nearestDirection = Mathf.Infinity;
-            if (direction.x == 0f && direction.y == 0f)
+            if (direction is { x: 0f, y: 0f, })
             {
                 return null;
             }

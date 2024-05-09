@@ -7,6 +7,7 @@ using Feature.Presenter;
 using Feature.Views;
 using Main.Controller;
 using Main.Input;
+using Main.Service;
 using VContainer;
 using VContainer.Unity;
 
@@ -35,6 +36,7 @@ namespace Main.Installer
 
             builder.RegisterComponentInHierarchy<GameUIView>();
             builder.Register<GameUIPresenter>(Lifetime.Scoped);
+            builder.Register<EnemySpawnService>(Lifetime.Scoped);
 
             builder.RegisterEntryPoint<GameController>(Lifetime.Scoped);
         }

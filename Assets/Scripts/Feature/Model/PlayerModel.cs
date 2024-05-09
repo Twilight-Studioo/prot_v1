@@ -1,5 +1,6 @@
 #region
 
+using Core.Utilities;
 using Feature.Common.Parameter;
 using UniRx;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace Feature.Model
     {
         private readonly CharacterParams characterParams;
 
+        public Vector2 Forward;
+
         [Inject]
         public PlayerModel(
             CharacterParams characterParams
@@ -23,13 +26,13 @@ namespace Feature.Model
         {
             this.characterParams = characterParams;
 
-            Health = new ReactiveProperty<ushort>(100);
+            Health = new ReactiveProperty<int>(characterParams.health);
             StayGround = new ReactiveProperty<bool>(true);
             IsDead = Health.Select(x => x <= 0).ToReadOnlyReactiveProperty();
             Position = new ReactiveProperty<Vector2>(Vector2.zero);
         }
 
-        public IReactiveProperty<ushort> Health { get; }
+        public IReactiveProperty<int> Health { get; }
 
         public ReadOnlyReactiveProperty<bool> IsDead { get; private set; }
 
@@ -38,6 +41,8 @@ namespace Feature.Model
         public float Speed => characterParams.speed;
 
         public float JumpPower => characterParams.jumpPower;
+
+        public int AttackPower => characterParams.attackPower;
 
         public IReactiveProperty<Vector2> Position { get; }
 
@@ -51,6 +56,12 @@ namespace Feature.Model
             Position.Value = position;
         }
 
+        public void SetDirection(Vector2 forward)
+        {
+            if (forward.x == 0f) return;
+            Forward = forward.x > 0 ? Vector2.right : Vector2.left;
+        }
+
         public int SetHealth(ushort health)
         {
             Health.Value = health;
@@ -61,5 +72,7 @@ namespace Feature.Model
         {
             Health.Value -= damage;
         }
+
+        public Vector2 AttachPoint() => Position.Value + Forward * 1.5f;
     }
 }
