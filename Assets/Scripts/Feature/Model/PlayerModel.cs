@@ -1,6 +1,5 @@
 #region
 
-using Core.Utilities;
 using Feature.Common.Parameter;
 using UniRx;
 using UnityEngine;
@@ -58,7 +57,11 @@ namespace Feature.Model
 
         public void SetDirection(Vector2 forward)
         {
-            if (forward.x == 0f) return;
+            if (forward.x == 0f)
+            {
+                return;
+            }
+
             Forward = forward.x > 0 ? Vector2.right : Vector2.left;
         }
 

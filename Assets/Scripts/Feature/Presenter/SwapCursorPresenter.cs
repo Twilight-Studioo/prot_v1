@@ -1,3 +1,5 @@
+#region
+
 using System.Collections.Generic;
 using System.Linq;
 using Core.Utilities;
@@ -10,15 +12,24 @@ using UniRx;
 using UnityEngine;
 using VContainer;
 
+#endregion
+
 namespace Feature.Presenter
 {
     public class SwapCursorPresenter
     {
         private readonly SwapCursorModel model;
-        private readonly SwapCursorView view;
         private readonly SwapCursorParams param;
         private readonly PlayerModel playerModel;
         private readonly IPlayerPresenter playerPresenter;
+        private readonly SwapCursorView view;
+
+        private List<SwapItemViewBase> beforeHighLights;
+        private IReactiveProperty<Vector2> moveOnMousePosition;
+
+        private IReactiveProperty<Vector2> movePosition;
+
+        private IReadOnlyReactiveProperty<Vector2> playerPosition;
 
         [Inject]
         public SwapCursorPresenter(
@@ -36,13 +47,6 @@ namespace Feature.Presenter
             this.playerPresenter = playerPresenter;
         }
 
-        private IReadOnlyReactiveProperty<Vector2> playerPosition;
-
-        private IReactiveProperty<Vector2> movePosition;
-        private IReactiveProperty<Vector2> moveOnMousePosition;
-        
-        private List<SwapItemViewBase> beforeHighLights;
-
         public void Start()
         {
             beforeHighLights = new();
@@ -50,24 +54,15 @@ namespace Feature.Presenter
             movePosition = new ReactiveProperty<Vector2>(new());
             moveOnMousePosition = new ReactiveProperty<Vector2>(new());
             playerPosition
-                .Subscribe(_ =>
-                {
-                    Moved(playerPosition.Value + movePosition.Value);
-                })
+                .Subscribe(_ => { Moved(playerPosition.Value + movePosition.Value); })
                 .AddTo(view);
             movePosition
                 .DistinctUntilChanged()
-                .Subscribe(_ =>
-                {
-                    Moved(playerPosition.Value + movePosition.Value);
-                })
+                .Subscribe(_ => { Moved(playerPosition.Value + movePosition.Value); })
                 .AddTo(view);
             moveOnMousePosition
                 .DistinctUntilChanged()
-                .Subscribe(_ =>
-                {
-                    Moved(moveOnMousePosition.Value);
-                })
+                .Subscribe(_ => { Moved(moveOnMousePosition.Value); })
                 .AddTo(view);
             model.Position = view.Position.ToReactiveProperty();
         }
@@ -81,7 +76,7 @@ namespace Feature.Presenter
                 movePosition.Value += diff;
             }
         }
-        
+
         public void SelectOnMouse(Vector2 pos)
         {
             var feat = pos.ToVector3();
@@ -106,6 +101,7 @@ namespace Feature.Presenter
                 {
                     swapItemViewBase.SetHighlight(false);
                 }
+
                 beforeHighLights.Clear();
             }
 
@@ -114,8 +110,9 @@ namespace Feature.Presenter
             {
                 return;
             }
-            
-            foreach (var item in hits.Select(gameObject => gameObject.GetComponent<SwapItemViewBase>()).Where(item => !item.IsNull()))
+
+            foreach (var item in hits.Select(gameObject => gameObject.GetComponent<SwapItemViewBase>())
+                         .Where(item => !item.IsNull()))
             {
                 item.SetHighlight(true);
                 beforeHighLights.Add(item);

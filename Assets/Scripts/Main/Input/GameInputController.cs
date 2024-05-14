@@ -5,7 +5,6 @@ using Core.Input;
 using Core.Utilities;
 using Feature.Common.State;
 using Feature.Interface.Presenter;
-using Main.Controller;
 using UniRx;
 using UnityEngine;
 using VContainer;
@@ -133,7 +132,7 @@ namespace Main.Input
                 .AddTo(disposables);
 
             swapMoveOnMouseAction = inputActionAccessor.CreateAction(Game.SwapMoveOnMouse);
-            
+
             Observable
                 .EveryUpdate()
                 .Select(_ => swapMoveOnMouseAction.ReadValue<Vector2>())

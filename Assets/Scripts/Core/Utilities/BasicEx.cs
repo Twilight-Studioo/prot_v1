@@ -46,24 +46,15 @@ namespace Core.Utilities
             return item.Equals(null);
         }
 
-        public static List<T> ToList<T>(this T value) where T: class => new() { value, };
-        
-        public static List<T> ToList<T>(this T[] value) where T: class => new(value);
+        public static List<T> ToList<T>(this T value) where T : class => new() { value, };
 
-        public static Vector3 ToVector3(this Vector2 value, float z = 0f)
-        {
-            return new(value.x, value.y, z);
-        }
-        
-        public static Vector2 ToVector2(this Vector3 value)
-        {
-            return new(value.x, value.y);
-        }
-        
-        public static bool Empty<T>([CanBeNull] this List<T> value)
-        {
-            return value == null || value.Count == 0;
-        }
+        public static List<T> ToList<T>(this T[] value) where T : class => new(value);
+
+        public static Vector3 ToVector3(this Vector2 value, float z = 0f) => new(value.x, value.y, z);
+
+        public static Vector2 ToVector2(this Vector3 value) => new(value.x, value.y);
+
+        public static bool Empty<T>([CanBeNull] this List<T> value) => value == null || value.Count == 0;
 
         public static bool IsInScreen(this Vector3 value)
         {

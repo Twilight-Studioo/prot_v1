@@ -23,6 +23,8 @@ namespace Main.Controller
 
         private readonly CompositeDisposable swapTimer;
 
+        private Vector2 before;
+
         [Inject]
         public SwapController(
             GameState gameState,
@@ -99,13 +101,13 @@ namespace Main.Controller
             }
         }
 
-        private Vector2 before;
         public void Select(Vector2 direction, bool isMouse)
         {
             if (!gameState.IsSwap() || before == direction)
             {
                 return;
             }
+
             swapItemsPresenter.MoveSelector(direction, playerPresenter.GetPosition());
             before = direction;
         }

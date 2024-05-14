@@ -1,3 +1,5 @@
+#region
+
 using Core.Utilities;
 using Feature.Interface.Presenter;
 using Feature.Model;
@@ -5,12 +7,15 @@ using Feature.Presenter;
 using UnityEngine;
 using VContainer;
 
+#endregion
+
 namespace Main.Controller
 {
-    public class SwapCursorController: ISwapController
+    public class SwapCursorController : ISwapController
     {
-        private readonly SwapCursorPresenter presenter;
         private readonly PlayerModel playerModel;
+        private readonly SwapCursorPresenter presenter;
+
         [Inject]
         public SwapCursorController(
             SwapCursorPresenter presenter,
@@ -20,6 +25,7 @@ namespace Main.Controller
             this.presenter = presenter;
             this.playerModel = playerModel;
         }
+
         public void Start()
         {
             presenter.Start();

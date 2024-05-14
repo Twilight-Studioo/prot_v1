@@ -1,11 +1,14 @@
-using System;
+#region
+
 using Core.Utilities;
 using UniRx;
 using UnityEngine;
 
+#endregion
+
 namespace Feature.Views
 {
-    public class SwapCursorView: MonoBehaviour
+    public class SwapCursorView : MonoBehaviour
     {
         public IReactiveProperty<Vector2> Position;
 

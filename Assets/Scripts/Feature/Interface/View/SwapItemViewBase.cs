@@ -53,6 +53,7 @@ namespace Feature.Interface.View
             {
                 return;
             }
+
             material.color = isHighlight ? Color.red : Color.blue;
         }
 
