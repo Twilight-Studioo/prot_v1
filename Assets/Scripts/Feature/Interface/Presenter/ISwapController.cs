@@ -8,6 +8,6 @@ namespace Feature.Interface.Presenter
 
         public void SetSwap(bool isSwap);
 
-        public void Select(Vector2 dir);
+        public void Select(Vector2 dir, bool isMouse);
     }
 }

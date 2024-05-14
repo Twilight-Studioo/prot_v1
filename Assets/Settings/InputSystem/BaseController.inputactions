@@ -24,9 +24,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SwapSelect",
+                    "name": "SwapMove",
                     "type": "Value",
                     "id": "226589b0-d7eb-4f03-b210-964a33b50ed5",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SwapMoveOnMouse",
+                    "type": "Value",
+                    "id": "9eed7688-3837-40a0-ad23-d17244a02c2b",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -147,7 +156,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwapSelect",
+                    "action": "SwapMove",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -158,7 +167,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwapSelect",
+                    "action": "SwapMove",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -169,7 +178,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwapSelect",
+                    "action": "SwapMove",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -180,7 +189,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwapSelect",
+                    "action": "SwapMove",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -191,7 +200,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwapSelect",
+                    "action": "SwapMove",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -202,7 +211,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwapSelect",
+                    "action": "SwapMove",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -247,6 +256,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "112602fd-8add-43a5-b71d-3fd6ceb5c4a7",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwapMoveOnMouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

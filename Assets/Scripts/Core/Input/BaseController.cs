@@ -48,9 +48,18 @@ namespace Core.Input
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SwapSelect"",
+                    ""name"": ""SwapMove"",
                     ""type"": ""Value"",
                     ""id"": ""226589b0-d7eb-4f03-b210-964a33b50ed5"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SwapMoveOnMouse"",
+                    ""type"": ""Value"",
+                    ""id"": ""9eed7688-3837-40a0-ad23-d17244a02c2b"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -171,7 +180,7 @@ namespace Core.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwapSelect"",
+                    ""action"": ""SwapMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -182,7 +191,7 @@ namespace Core.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwapSelect"",
+                    ""action"": ""SwapMove"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -193,7 +202,7 @@ namespace Core.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwapSelect"",
+                    ""action"": ""SwapMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -204,7 +213,7 @@ namespace Core.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwapSelect"",
+                    ""action"": ""SwapMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -215,7 +224,7 @@ namespace Core.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwapSelect"",
+                    ""action"": ""SwapMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -226,7 +235,7 @@ namespace Core.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwapSelect"",
+                    ""action"": ""SwapMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -271,6 +280,17 @@ namespace Core.Input
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""112602fd-8add-43a5-b71d-3fd6ceb5c4a7"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwapMoveOnMouse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -397,7 +417,8 @@ namespace Core.Input
             m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
             m_Game_Move = m_Game.FindAction("Move", throwIfNotFound: true);
             m_Game_Jump = m_Game.FindAction("Jump", throwIfNotFound: true);
-            m_Game_SwapSelect = m_Game.FindAction("SwapSelect", throwIfNotFound: true);
+            m_Game_SwapMove = m_Game.FindAction("SwapMove", throwIfNotFound: true);
+            m_Game_SwapMoveOnMouse = m_Game.FindAction("SwapMoveOnMouse", throwIfNotFound: true);
             m_Game_DoSwap = m_Game.FindAction("DoSwap", throwIfNotFound: true);
             m_Game_Attack = m_Game.FindAction("Attack", throwIfNotFound: true);
             // UI
@@ -467,7 +488,8 @@ namespace Core.Input
         private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
         private readonly InputAction m_Game_Move;
         private readonly InputAction m_Game_Jump;
-        private readonly InputAction m_Game_SwapSelect;
+        private readonly InputAction m_Game_SwapMove;
+        private readonly InputAction m_Game_SwapMoveOnMouse;
         private readonly InputAction m_Game_DoSwap;
         private readonly InputAction m_Game_Attack;
         public struct GameActions
@@ -476,7 +498,8 @@ namespace Core.Input
             public GameActions(@BaseController wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Game_Move;
             public InputAction @Jump => m_Wrapper.m_Game_Jump;
-            public InputAction @SwapSelect => m_Wrapper.m_Game_SwapSelect;
+            public InputAction @SwapMove => m_Wrapper.m_Game_SwapMove;
+            public InputAction @SwapMoveOnMouse => m_Wrapper.m_Game_SwapMoveOnMouse;
             public InputAction @DoSwap => m_Wrapper.m_Game_DoSwap;
             public InputAction @Attack => m_Wrapper.m_Game_Attack;
             public InputActionMap Get() { return m_Wrapper.m_Game; }
@@ -494,9 +517,12 @@ namespace Core.Input
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @SwapSelect.started += instance.OnSwapSelect;
-                @SwapSelect.performed += instance.OnSwapSelect;
-                @SwapSelect.canceled += instance.OnSwapSelect;
+                @SwapMove.started += instance.OnSwapMove;
+                @SwapMove.performed += instance.OnSwapMove;
+                @SwapMove.canceled += instance.OnSwapMove;
+                @SwapMoveOnMouse.started += instance.OnSwapMoveOnMouse;
+                @SwapMoveOnMouse.performed += instance.OnSwapMoveOnMouse;
+                @SwapMoveOnMouse.canceled += instance.OnSwapMoveOnMouse;
                 @DoSwap.started += instance.OnDoSwap;
                 @DoSwap.performed += instance.OnDoSwap;
                 @DoSwap.canceled += instance.OnDoSwap;
@@ -513,9 +539,12 @@ namespace Core.Input
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
-                @SwapSelect.started -= instance.OnSwapSelect;
-                @SwapSelect.performed -= instance.OnSwapSelect;
-                @SwapSelect.canceled -= instance.OnSwapSelect;
+                @SwapMove.started -= instance.OnSwapMove;
+                @SwapMove.performed -= instance.OnSwapMove;
+                @SwapMove.canceled -= instance.OnSwapMove;
+                @SwapMoveOnMouse.started -= instance.OnSwapMoveOnMouse;
+                @SwapMoveOnMouse.performed -= instance.OnSwapMoveOnMouse;
+                @SwapMoveOnMouse.canceled -= instance.OnSwapMoveOnMouse;
                 @DoSwap.started -= instance.OnDoSwap;
                 @DoSwap.performed -= instance.OnDoSwap;
                 @DoSwap.canceled -= instance.OnDoSwap;
@@ -597,7 +626,8 @@ namespace Core.Input
         {
             void OnMove(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
-            void OnSwapSelect(InputAction.CallbackContext context);
+            void OnSwapMove(InputAction.CallbackContext context);
+            void OnSwapMoveOnMouse(InputAction.CallbackContext context);
             void OnDoSwap(InputAction.CallbackContext context);
             void OnAttack(InputAction.CallbackContext context);
         }

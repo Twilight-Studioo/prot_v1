@@ -49,6 +49,10 @@ namespace Feature.Interface.View
 
         public void SetHighlight(bool isHighlight)
         {
+            if (material.IsNull())
+            {
+                return;
+            }
             material.color = isHighlight ? Color.red : Color.blue;
         }
 

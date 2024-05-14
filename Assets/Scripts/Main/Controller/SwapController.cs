@@ -99,9 +99,15 @@ namespace Main.Controller
             }
         }
 
-        public void Select(Vector2 direction)
+        private Vector2 before;
+        public void Select(Vector2 direction, bool isMouse)
         {
+            if (!gameState.IsSwap() || before == direction)
+            {
+                return;
+            }
             swapItemsPresenter.MoveSelector(direction, playerPresenter.GetPosition());
+            before = direction;
         }
 
         private void DoSwap()

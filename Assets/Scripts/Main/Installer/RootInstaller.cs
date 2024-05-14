@@ -14,6 +14,7 @@ namespace Main.Installer
 {
     public class RootInstaller : LifetimeScope
     {
+        [SerializeField] private SwapCursorParams swapCursorParams;
         [SerializeField] private CharacterParams characterParams;
         [SerializeField] private Enemy1Params enemy1Params;
         [SerializeField] private Enemy2Params enemy2Params;
@@ -28,6 +29,7 @@ namespace Main.Installer
             builder.RegisterComponent(characterParams);
             builder.RegisterComponent(enemy1Params);
             builder.RegisterComponent(enemy2Params);
+            builder.RegisterComponent(swapCursorParams);
         }
     }
 }

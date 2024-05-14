@@ -27,7 +27,10 @@ namespace Main.Installer
             builder.Register<SwapItemsModel>(Lifetime.Scoped);
             builder.Register<SwapItemsPresenter>(Lifetime.Scoped);
 
-            builder.Register<ISwapController, SwapController>(Lifetime.Scoped);
+            builder.RegisterComponentInHierarchy<SwapCursorView>();
+            builder.Register<SwapCursorModel>(Lifetime.Scoped);
+            builder.Register<SwapCursorPresenter>(Lifetime.Scoped);
+            builder.Register<ISwapController, SwapCursorController>(Lifetime.Scoped);
 
             builder.Register<GameState>(Lifetime.Scoped);
             builder.Register<GameInputController>(Lifetime.Scoped);

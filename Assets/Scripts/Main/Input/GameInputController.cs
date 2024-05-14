@@ -35,7 +35,8 @@ namespace Main.Input
 
         private InputActionEvent swapAction;
 
-        private InputActionEvent swapSelectAction;
+        private InputActionEvent swapMoveAction;
+        private InputActionEvent swapMoveOnMouseAction;
 
         [Inject]
         public GameInputController(
@@ -59,7 +60,7 @@ namespace Main.Input
 
             swapAction.Clear();
 
-            swapSelectAction.Clear();
+            swapMoveAction.Clear();
 
             disposables.Dispose();
         }
@@ -124,13 +125,19 @@ namespace Main.Input
                 .Subscribe(x => { swapController.SetSwap(x > 0f); })
                 .AddTo(disposables);
 
-            swapSelectAction = inputActionAccessor.CreateAction(Game.SwapSelect);
+            swapMoveAction = inputActionAccessor.CreateAction(Game.SwapMove);
 
             Observable.EveryUpdate()
-                .Where(_ => gameState.IsSwap())
-                .Select(_ => swapSelectAction.ReadValue<Vector2>())
-                .DistinctUntilChanged()
-                .Subscribe(x => { swapController.Select(x); })
+                .Select(_ => swapMoveAction.ReadValue<Vector2>())
+                .Subscribe(x => { swapController.Select(x, false); })
+                .AddTo(disposables);
+
+            swapMoveOnMouseAction = inputActionAccessor.CreateAction(Game.SwapMoveOnMouse);
+            
+            Observable
+                .EveryUpdate()
+                .Select(_ => swapMoveOnMouseAction.ReadValue<Vector2>())
+                .Subscribe(x => { swapController.Select(x, true); })
                 .AddTo(disposables);
         }
 
