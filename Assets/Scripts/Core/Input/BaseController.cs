@@ -263,6 +263,17 @@ namespace Core.Input
                 },
                 {
                     ""name"": """",
+                    ""id"": ""206a140a-5cbf-493a-890f-f4f937dbcbbd"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DoSwap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""3e71082a-ce0a-4dde-95a1-d353a7ade12f"",
                     ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
@@ -275,7 +286,7 @@ namespace Core.Input
                 {
                     ""name"": """",
                     ""id"": ""97806f57-21ba-48af-ad14-5b4dc1a01ee3"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
