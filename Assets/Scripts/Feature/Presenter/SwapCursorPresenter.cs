@@ -130,14 +130,16 @@ namespace Feature.Presenter
             foreach (var gameObject in hits)
             {
                 var item = gameObject.GetComponent<SwapItemViewBase>();
-                if (!item.IsNull())
+                if (item.IsNull())
                 {
-                    var pos = playerPresenter.GetPosition();
-                    playerPresenter.SetPosition(item.transform.position);
-                    item.SetPosition(pos);
-                    item.SetHighlight(false);
-                    break;
+                    continue;
                 }
+
+                var pos = playerPresenter.GetPosition();
+                playerPresenter.SetPosition(item.transform.position);
+                item.SetPosition(pos);
+                item.SetHighlight(false);
+                break;
             }
         }
     }
