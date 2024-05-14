@@ -25,7 +25,7 @@ namespace Main.Input
         private readonly GameState gameState;
         private readonly InputActionAccessor inputActionAccessor;
         private readonly IPlayerPresenter playerPresenter;
-        private readonly SwapController swapController;
+        private readonly ISwapController swapController;
 
         private InputActionEvent attackAction;
 
@@ -42,7 +42,7 @@ namespace Main.Input
             InputActionAccessor inputActionAccessor,
             GameState gameState,
             IPlayerPresenter playerPresenter,
-            SwapController swapController
+            ISwapController swapController
         )
         {
             this.inputActionAccessor = inputActionAccessor;

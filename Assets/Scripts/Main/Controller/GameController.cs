@@ -25,7 +25,7 @@ namespace Main.Controller
         private readonly GameUIPresenter gameUIPresenter;
         private readonly IPlayerPresenter playerPresenter;
         private readonly RootInstance rootInstance;
-        private readonly SwapController swapController;
+        private readonly ISwapController swapController;
         private readonly SwapItemsPresenter swapItemsPresenter;
         private readonly UserRepository userRepository;
 
@@ -38,7 +38,7 @@ namespace Main.Controller
             GameState gameState,
             SwapItemsPresenter swapItemsPresenter,
             GameUIPresenter gameUIPresenter,
-            SwapController swapController,
+            ISwapController swapController,
             EnemySpawnService enemySpawnService
         )
         {

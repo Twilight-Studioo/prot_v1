@@ -14,7 +14,7 @@ using VContainer;
 
 namespace Main.Controller
 {
-    public class SwapController : IDisposable
+    public class SwapController : ISwapController, IDisposable
     {
         private readonly CharacterParams characterParams;
         private readonly GameState gameState;
