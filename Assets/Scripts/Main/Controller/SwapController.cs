@@ -1,6 +1,7 @@
 #region
 
 using System;
+using Core.Utilities;
 using Feature.Common.Parameter;
 using Feature.Common.State;
 using Feature.Interface.Presenter;
@@ -75,6 +76,7 @@ namespace Main.Controller
                 if (gameState.CurrentState.Value is GameState.State.Playing)
                 {
                     gameState.Swap();
+                    swapTimer?.Clear();
                     Observable
                         .Timer(TimeSpan.FromSeconds(characterParams.swapTimeSec * Time.timeScale))
                         .Subscribe(_ =>
@@ -106,11 +108,14 @@ namespace Main.Controller
         {
             Time.timeScale = characterParams.inSwapTimeScale;
             swapItemsPresenter.ResetSelector();
+            DebugEx.LogDetailed("Swap Start");
         }
 
         private void EndSwap()
         {
             var item = swapItemsPresenter.SelectItem();
+            swapItemsPresenter.ResetSelector();
+            DebugEx.LogDetailed("Swap Ended");
             if (item == null)
             {
                 return;

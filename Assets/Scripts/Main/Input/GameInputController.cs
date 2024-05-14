@@ -121,7 +121,7 @@ namespace Main.Input
                 .Where(_ => gameState.CanSwap())
                 .Select(_ => swapAction.ReadValue<float>())
                 .DistinctUntilChanged()
-                .Subscribe(_ => { swapController.SetSwap(swapAction.ReadValue<float>() > 0f); })
+                .Subscribe(x => { swapController.SetSwap(x > 0f); })
                 .AddTo(disposables);
 
             swapSelectAction = inputActionAccessor.CreateAction(Game.SwapSelect);
@@ -130,7 +130,7 @@ namespace Main.Input
                 .Where(_ => gameState.IsSwap())
                 .Select(_ => swapSelectAction.ReadValue<Vector2>())
                 .DistinctUntilChanged()
-                .Subscribe(_ => { swapController.Select(swapSelectAction.ReadValue<Vector2>()); })
+                .Subscribe(x => { swapController.Select(x); })
                 .AddTo(disposables);
         }
 

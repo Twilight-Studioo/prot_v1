@@ -46,7 +46,9 @@ namespace Core.Utilities
             return item.Equals(null);
         }
 
-        public static List<T> ToList<T>(this T value) => new() { value, };
+        public static List<T> ToList<T>(this T value) where T: class => new() { value, };
+        
+        public static List<T> ToList<T>(this T[] value) where T: class => new(value);
 
         public static T CoerceAtLeast<T>(T value, T min) where T : IComparable<T> =>
             value.CompareTo(min) < 0 ? min : value;

@@ -15,7 +15,8 @@ MonoBehaviour:
   health: 100
   speed: 1
   jumpPower: 1
-  swapTimeSec: 3
-  canSwapDistance: 10
+  swapTimeSec: 10
+  canSwapDistance: 30
   afterSwappedTimeSec: 0.5
   inSwapTimeScale: 0.3
+  attackPower: 10

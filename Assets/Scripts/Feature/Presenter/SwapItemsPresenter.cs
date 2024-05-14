@@ -7,7 +7,6 @@ using Core.Utilities;
 using Feature.Common.Parameter;
 using Feature.Interface.View;
 using Feature.Model;
-using Feature.Views;
 using UniRx;
 using UnityEngine;
 using VContainer;
@@ -33,7 +32,7 @@ namespace Feature.Presenter
         {
             this.swapItemsModel = swapItemsModel;
             this.characterParams = characterParams;
-            var list = Object.FindObjectsOfType<SwapItemView>().Cast<SwapItemViewBase>().ToList();
+            var list = Object.FindObjectsOfType<SwapItemViewBase>().ToList();
             rememberItemPosition = new();
             AddItems(list);
         }

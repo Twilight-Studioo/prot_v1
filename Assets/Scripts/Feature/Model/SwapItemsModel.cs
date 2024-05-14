@@ -96,7 +96,14 @@ namespace Feature.Model
                 return null;
             }
 
-            return swapItems.First(x => x.Id == currentId);
+            try
+            {
+                return swapItems.First(x => x.Id == currentId);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -108,28 +115,47 @@ namespace Feature.Model
         /// <returns>The nearest object in the preferred direction within the maximum distance, null if no such item exists</returns>
         public SwapItem? GetNearestItem(Vector3 position, Vector3 direction, float maxDistance)
         {
-            var nearestItem = GetCurrentItem();
-            var nearestDirection = Mathf.Infinity;
+            var nearestItem = (SwapItem?)null;
+            var nearestDirDot = -1f;
+            var nearestDistance = Mathf.Infinity;
+
             if (direction is { x: 0f, y: 0f, })
             {
                 return null;
             }
 
-            direction = new(direction.x, direction.y, direction.z);
-            var items = swapItems
-                .Where(x => Vector3.Distance(x.Position, position) < maxDistance);
-            const float def = Mathf.Deg2Rad * 90f;
-            foreach (var item in items)
-            {
-                var toItem = item.Position - position;
-                var dir = Vector2.Dot(direction, toItem.normalized) - def;
-                if (Math.Abs(nearestDirection) < Math.Abs(dir))
-                {
-                    continue;
-                }
+            // Filter and process items in range
+            var itemsInRange = swapItems
+                .Where(item => Vector3.Distance(item.Position, position) < maxDistance)
+                .ToList();
 
-                nearestItem = item;
-                nearestDirection = dir;
+            // Dictionary to hold angle and distance data
+            var itemMetrics = new Dictionary<SwapItem, (float angleDot, float distance)>();
+
+            foreach (var item in itemsInRange)
+            {
+                var itemDirection = item.Position - position;
+                var distance = itemDirection.magnitude;
+                var angleDot = Vector3.Dot(direction.normalized, itemDirection.normalized);
+
+                // Save the angle and distance for each item
+                itemMetrics[item] = (angleDot, distance);
+            }
+
+            // Select the item that has the highest dot product (closest to desired direction) and within the maximum distance
+            foreach (var (item, (angleDot, distance)) in itemMetrics)
+            {
+                if (angleDot > nearestDirDot)
+                {
+                    nearestDirDot = angleDot;
+                    nearestItem = item;
+                    nearestDistance = distance;
+                }
+                else if (Mathf.Approximately(angleDot, nearestDirDot) && distance < nearestDistance)
+                {
+                    nearestItem = item;
+                    nearestDistance = distance;
+                }
             }
 
             return nearestItem;
