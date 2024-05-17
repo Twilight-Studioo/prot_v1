@@ -10,5 +10,7 @@ namespace Feature.Common.Parameter
     public class SwapCursorParams : ScriptableObject
     {
         public float moveSpeed = 1f;
+
+        public float mouseAdSpeed = 1f;
     }
 }

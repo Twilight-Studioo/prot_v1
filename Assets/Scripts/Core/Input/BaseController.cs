@@ -297,7 +297,7 @@ namespace Core.Input
                 {
                     ""name"": """",
                     ""id"": ""112602fd-8add-43a5-b71d-3fd6ceb5c4a7"",
-                    ""path"": ""<Mouse>/position"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

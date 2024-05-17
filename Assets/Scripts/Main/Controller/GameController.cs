@@ -7,6 +7,8 @@ using Feature.Presenter;
 using Feature.Repository;
 using Main.Input;
 using Main.Service;
+using UniRx;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -56,6 +58,19 @@ namespace Main.Controller
         public void Start()
         {
             gameState.Initialize();
+            gameState.CurrentState
+                .DistinctUntilChanged()
+                .Subscribe(x =>
+                {
+                    if (x is GameState.State.Playing)
+                    {
+                        Cursor.visible = false;
+                    }
+                    else if (x is GameState.State.Paused or GameState.State.Finished)
+                    {
+                        Cursor.visible = true;
+                    }
+                });
             // input action start
             gameInputController.Start();
 

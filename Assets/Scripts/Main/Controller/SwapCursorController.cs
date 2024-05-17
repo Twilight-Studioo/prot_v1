@@ -1,6 +1,6 @@
 #region
 
-using Core.Utilities;
+using Feature.Common.Parameter;
 using Feature.Interface.Presenter;
 using Feature.Presenter;
 using UnityEngine;
@@ -13,13 +13,16 @@ namespace Main.Controller
     public class SwapCursorController : ISwapController
     {
         private readonly SwapCursorPresenter presenter;
+        private readonly SwapCursorParams param;
 
         [Inject]
         public SwapCursorController(
-            SwapCursorPresenter presenter
+            SwapCursorPresenter presenter,
+            SwapCursorParams param
         )
         {
             this.presenter = presenter;
+            this.param = param;
         }
 
         public void Start()
@@ -43,10 +46,11 @@ namespace Main.Controller
             }
             else
             {
-                var screenPoint = dir.ToVector3();
-                screenPoint.z = 10.0f;
-                var pos = Camera.main.ScreenToWorldPoint(screenPoint);
-                presenter.SelectOnMouse(pos);
+                presenter.Select(dir * 6f * param.mouseAdSpeed);
+                // var screenPoint = dir.ToVector3();
+                // screenPoint.z = 10.0f;
+                // var pos = Camera.main.ScreenToWorldPoint(screenPoint);
+                // presenter.SelectOnMouse(pos);
             }
         }
     }
