@@ -24,7 +24,7 @@ namespace Feature.Presenter
         private readonly IPlayerPresenter playerPresenter;
         private readonly SwapCursorView view;
 
-        private List<SwapItemViewBase> beforeHighLights;
+        private SwapItemViewBase beforeHighLight;
         private IReactiveProperty<Vector2> moveOnMousePosition;
 
         private IReactiveProperty<Vector2> movePosition;
@@ -49,7 +49,6 @@ namespace Feature.Presenter
 
         public void Start()
         {
-            beforeHighLights = new();
             playerPosition = playerModel.Position.ToReactiveProperty();
             movePosition = new ReactiveProperty<Vector2>(new());
             moveOnMousePosition = new ReactiveProperty<Vector2>(new());
@@ -95,14 +94,9 @@ namespace Feature.Presenter
 
         private void SetHighLight()
         {
-            if (!beforeHighLights.Empty())
+            if (!beforeHighLight.IsNull())
             {
-                foreach (var swapItemViewBase in beforeHighLights)
-                {
-                    swapItemViewBase.SetHighlight(false);
-                }
-
-                beforeHighLights.Clear();
+                beforeHighLight.SetHighlight(false);
             }
 
             List<GameObject> hits = new();
@@ -110,13 +104,19 @@ namespace Feature.Presenter
             {
                 return;
             }
-
-            foreach (var item in hits.Select(gameObject => gameObject.GetComponent<SwapItemViewBase>())
-                         .Where(item => !item.IsNull()))
+            hits.Sort((x, y) =>
             {
-                item.SetHighlight(true);
-                beforeHighLights.Add(item);
-            }
+                var xDistance = x.transform.position.ToVector2() - model.Position.Value;
+                var yDistance = y.transform.position.ToVector2() - model.Position.Value;
+                return (int)((xDistance.magnitude - yDistance.magnitude) * 1000);
+            });
+            
+            var item = hits
+                .Select(gameObject => gameObject.GetComponent<SwapItemViewBase>())
+                .FirstOrNull(item => !item.IsNull());
+            if (item.IsNull()) return;
+            item?.SetHighlight(true);
+            beforeHighLight = item;
         }
 
         public void TrySwap()
