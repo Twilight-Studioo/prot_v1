@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9095cc864944bbf97640437b8748ee5, type: 3}
   m_Name: SwapCursorParams
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  mouseAdSpeed: 1
-  assistedDistance: 5
-  assistPower: 1
+  moveSpeed: 0.7
+  mouseAdSpeed: 0.49
+  assistedDistance: 15.1
+  assistPower: 20.2
