@@ -56,9 +56,10 @@ namespace Core.Utilities
             lastOrigin = origin;
             lastPointSize = pointSize;
             // Find all colliders at the specified position within the given radius
-            var colliders = Physics2D.OverlapCircleAll(origin, pointSize);
+            var colliders = new Collider2D[10];
+            var size = Physics2D.OverlapCircleNonAlloc(origin, pointSize, colliders);
 
-            if (colliders.Length == 0)
+            if (size == 0)
             {
                 return false;
             }

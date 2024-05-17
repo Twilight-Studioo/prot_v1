@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: SwapCursorParams
   m_EditorClassIdentifier: 
   moveSpeed: 1
+  mouseAdSpeed: 1
+  assistedDistance: 5
+  assistPower: 1

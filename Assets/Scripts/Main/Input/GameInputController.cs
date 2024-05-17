@@ -136,6 +136,7 @@ namespace Main.Input
             Observable
                 .EveryUpdate()
                 .Select(_ => swapMoveOnMouseAction.ReadValue<Vector2>())
+                .DistinctUntilChanged()
                 .Subscribe(x => { swapController.Select(x, true); })
                 .AddTo(disposables);
         }

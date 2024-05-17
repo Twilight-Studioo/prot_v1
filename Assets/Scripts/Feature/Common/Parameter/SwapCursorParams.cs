@@ -12,5 +12,9 @@ namespace Feature.Common.Parameter
         public float moveSpeed = 1f;
 
         public float mouseAdSpeed = 1f;
+
+        public float assistedDistance = 5f;
+
+        public float assistPower = 1f;
     }
 }

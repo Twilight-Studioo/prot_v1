@@ -68,11 +68,56 @@ namespace Feature.Presenter
 
         public void Select(Vector2 dir)
         {
-            var diff = dir * Time.deltaTime * 4f * param.moveSpeed;
+            if (dir == Vector2.zero)
+            {
+                return;
+            }
+            
+            var deltaTime = Time.deltaTime;
+            var moveSpeed = param.moveSpeed;
+            var assistPower = param.assistPower;
+            var assistThreshold = 60f;
+
+            var diff = dir * deltaTime * 4f * moveSpeed;
             var feat = (playerPosition.Value + movePosition.Value + diff).ToVector3();
             if (feat.IsInScreen())
             {
                 movePosition.Value += diff;
+
+                // direction assist
+                List<GameObject> hits = new();
+                var position = playerPosition.Value + movePosition.Value;
+                if (RaycastEx.FindObjectWithPosition(position, param.assistedDistance, ref hits))
+                {
+                    hits.Sort((x, y) => 
+                    {
+                    var xDistance = x.transform.position.ToVector2() - position;
+                    var yDistance = y.transform.position.ToVector2() - position;
+                    return (int)((xDistance.magnitude - yDistance.magnitude) * 1000);
+                    });
+                
+                    var nearestItem = hits
+                        .Select(gameObject => gameObject.GetComponent<SwapItemViewBase>())
+                        .FirstOrNull();
+                    if (nearestItem.IsNull() || nearestItem == null)
+                    {
+                        return;
+                    }
+
+                    var itemDirection = nearestItem.transform.position.ToVector2() - position;
+                    var itemAngle = Vector2.Angle(dir, itemDirection);
+
+                    if (itemAngle <= assistThreshold)
+                    {
+                        var nudgeDirection = itemDirection.normalized * deltaTime * (12f / (itemDirection.magnitude + 1)) * assistPower;
+                        movePosition.Value += nudgeDirection;
+                    }
+                        
+                    if (itemAngle >= 180f - assistThreshold)
+                    {
+                        movePosition.Value -= diff / (2.5f * (itemDirection.magnitude + 1));
+                    }
+                }
             }
         }
 
