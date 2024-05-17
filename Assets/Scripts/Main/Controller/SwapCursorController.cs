@@ -12,8 +12,8 @@ namespace Main.Controller
 {
     public class SwapCursorController : ISwapController
     {
-        private readonly SwapCursorPresenter presenter;
         private readonly SwapCursorParams param;
+        private readonly SwapCursorPresenter presenter;
 
         [Inject]
         public SwapCursorController(

@@ -72,7 +72,7 @@ namespace Feature.Presenter
             {
                 return;
             }
-            
+
             var deltaTime = Time.deltaTime;
             var moveSpeed = param.moveSpeed;
             var assistPower = param.assistPower;
@@ -89,13 +89,13 @@ namespace Feature.Presenter
                 var position = playerPosition.Value + movePosition.Value;
                 if (RaycastEx.FindObjectWithPosition(position, param.assistedDistance, ref hits))
                 {
-                    hits.Sort((x, y) => 
+                    hits.Sort((x, y) =>
                     {
-                    var xDistance = x.transform.position.ToVector2() - position;
-                    var yDistance = y.transform.position.ToVector2() - position;
-                    return (int)((xDistance.magnitude - yDistance.magnitude) * 1000);
+                        var xDistance = x.transform.position.ToVector2() - position;
+                        var yDistance = y.transform.position.ToVector2() - position;
+                        return (int)((xDistance.magnitude - yDistance.magnitude) * 1000);
                     });
-                
+
                     var nearestItem = hits
                         .Select(gameObject => gameObject.GetComponent<SwapItemViewBase>())
                         .FirstOrNull();
@@ -109,10 +109,11 @@ namespace Feature.Presenter
 
                     if (itemAngle <= assistThreshold)
                     {
-                        var nudgeDirection = itemDirection.normalized * deltaTime * (12f / (itemDirection.magnitude + 1)) * assistPower;
+                        var nudgeDirection = itemDirection.normalized * deltaTime *
+                                             (12f / (itemDirection.magnitude + 1)) * assistPower;
                         movePosition.Value += nudgeDirection;
                     }
-                        
+
                     if (itemAngle >= 180f - assistThreshold)
                     {
                         movePosition.Value -= diff / (2.5f * (itemDirection.magnitude + 1));
@@ -149,17 +150,22 @@ namespace Feature.Presenter
             {
                 return;
             }
+
             hits.Sort((x, y) =>
             {
                 var xDistance = x.transform.position.ToVector2() - model.Position.Value;
                 var yDistance = y.transform.position.ToVector2() - model.Position.Value;
                 return (int)((xDistance.magnitude - yDistance.magnitude) * 1000);
             });
-            
+
             var item = hits
                 .Select(gameObject => gameObject.GetComponent<SwapItemViewBase>())
                 .FirstOrNull(item => !item.IsNull());
-            if (item.IsNull()) return;
+            if (item.IsNull())
+            {
+                return;
+            }
+
             item?.SetHighlight(true);
             beforeHighLight = item;
         }
