@@ -14,6 +14,7 @@ namespace Feature.Interface.View
     {
         [SerializeField] private SpriteRenderer material;
 
+        // ReSharper disable once MemberCanBePrivate.Local
         public readonly IReactiveProperty<Vector2> Position = new ReactiveProperty<Vector2>();
         [NonSerialized] protected bool IsActive;
 
@@ -52,7 +53,7 @@ namespace Feature.Interface.View
             material.color = isHighlight ? Color.red : Color.blue;
         }
 
-        public void Delete()
+        protected void Delete()
         {
             OnDestroy?.Invoke();
             this.DestroyGameObject();

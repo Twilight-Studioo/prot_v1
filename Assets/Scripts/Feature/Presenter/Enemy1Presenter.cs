@@ -33,7 +33,7 @@ namespace Feature.Presenter
         )
         {
             this.param = param;
-            enemyModel = new EnemyModel(param);
+            enemyModel = param.Create();
             this.enemyView = enemyView;
             this.playerModel = playerModel;
             this.swapItemsPresenter = swapItemsPresenter;

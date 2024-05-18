@@ -56,7 +56,7 @@ namespace Main.Service
                     SpawnEnemy1(position);
                     break;
                 case EnemyType.Enemy2:
-                    // You can implement different behavior for Enemy2
+                    SpawnEnemy2(position);
                     break;
                 default:
                     throw new ArgumentException($"Unsupported enemy type: {type}");
@@ -86,6 +86,35 @@ namespace Main.Service
             {
                 enemies.Remove(presenter);
                 Spawn(EnemyType.Enemy1, playerModel.Position.Value);
+            };
+            enemies.Add(presenter);
+            presenter.Spawned();
+        }
+
+        private void SpawnEnemy2(Vector3 position)
+        {
+            if (enemy2Params.prefab.IsNull())
+            {
+                throw new NotImplementedException($"Not Attached {enemy2Params}");
+            }
+
+            if (enemy2Params.View().IsNull())
+            {
+                return;
+            }
+
+            var enemy = Object.Instantiate(enemy2Params.View(), position, Quaternion.identity);
+            if (enemy.IsNull())
+            {
+                return;
+            }
+
+            // TODO: Implement Enemy2Presenter
+            var presenter = new Enemy1Presenter(enemy1Params, enemy, playerModel, swapItemsPresenter);
+            presenter.OnDead += () =>
+            {
+                enemies.Remove(presenter);
+                Spawn(EnemyType.Enemy2, playerModel.Position.Value);
             };
             enemies.Add(presenter);
             presenter.Spawned();

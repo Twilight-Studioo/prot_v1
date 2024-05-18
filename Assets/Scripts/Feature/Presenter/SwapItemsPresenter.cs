@@ -75,6 +75,11 @@ namespace Feature.Presenter
 
         public void RemoveItems(List<SwapItemViewBase> items)
         {
+            if (items == null)
+            {
+                return;
+            }
+
             foreach (var swapItemViewBase in items)
             {
                 var found = swapItemViews.First(x => x.Value == swapItemViewBase);

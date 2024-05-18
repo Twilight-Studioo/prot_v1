@@ -1,3 +1,5 @@
+// ReSharper disable ParameterHidesMember
+
 #region
 
 using Feature.Interface;
@@ -18,6 +20,8 @@ namespace Feature.Common.Scene.Generated
         private readonly string path;
         private readonly ISceneDataModel sceneDataModel;
         private RootInstance rootInstance;
+
+        // ReSharper disable once NotAccessedField.Local
         private Scene scene;
 
         public SceneLoader(Scene scene, string path, ISceneDataModel sceneDataModel)

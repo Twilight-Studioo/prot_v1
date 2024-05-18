@@ -24,9 +24,7 @@ namespace Main.Controller
         private readonly GameState gameState;
         private readonly GameUIPresenter gameUIPresenter;
         private readonly IPlayerPresenter playerPresenter;
-        private readonly RootInstance rootInstance;
         private readonly SwapController swapController;
-        private readonly SwapItemsPresenter swapItemsPresenter;
         private readonly UserRepository userRepository;
 
         [Inject]
@@ -43,11 +41,9 @@ namespace Main.Controller
         )
         {
             this.userRepository = userRepository;
-            this.rootInstance = rootInstance;
             this.gameInputController = gameInputController;
             this.gameState = gameState;
             this.playerPresenter = playerPresenter;
-            this.swapItemsPresenter = swapItemsPresenter;
             this.gameUIPresenter = gameUIPresenter;
             this.swapController = swapController;
             this.enemySpawnService = enemySpawnService;

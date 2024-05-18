@@ -16,13 +16,10 @@ namespace Feature.Model
 
     public class EnemyModel : IEnemyModel
     {
-        private Enemy1Params param;
-
         public EnemyModel(
             Enemy1Params param
         )
         {
-            this.param = param;
             Health = new ReactiveProperty<uint>(param.health);
             IsDead = Health.Select(x => x <= 0).ToReactiveProperty();
         }
