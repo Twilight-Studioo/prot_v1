@@ -32,7 +32,7 @@ namespace Core.Input
             profileAsset = Resources.Load<InputActionAssetProfile>("InputActionAssetProfile");
             if (profileAsset == null)
             {
-                Debug.LogError(
+                Debug.LogWarning(
                     "InputActionAssetProfile was not found! \nPlease create a profile in the Resources folder.");
             }
         }
