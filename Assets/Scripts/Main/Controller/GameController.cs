@@ -45,11 +45,9 @@ namespace Main.Controller
         )
         {
             this.userRepository = userRepository;
-            this.rootInstance = rootInstance;
             this.gameInputController = gameInputController;
             this.gameState = gameState;
             this.playerPresenter = playerPresenter;
-            this.swapItemsPresenter = swapItemsPresenter;
             this.gameUIPresenter = gameUIPresenter;
             this.swapController = swapController;
             this.enemySpawnService = enemySpawnService;

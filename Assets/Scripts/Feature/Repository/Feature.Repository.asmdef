@@ -1,8 +1,5 @@
 {
   "name": "Feature.Repository",
-  "references": [
-    "GUID:495fdec8499c74820bf44461f0ae9311"
-  ],
   "rootNamespace": "",
   "references": [
     "GUID:495fdec8499c74820bf44461f0ae9311"

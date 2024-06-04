@@ -23,14 +23,8 @@ namespace Feature.Model
 
     public class SwapItemsModel
     {
-        private readonly List<SwapItem> swapItems;
-        private Guid currentId;
-
-        public SwapItemsModel()
-        {
-            swapItems = new();
-            currentId = Guid.Empty;
-        }
+        private readonly List<SwapItem> swapItems = new();
+        private Guid currentId = Guid.Empty;
 
         public void AddItems(List<SwapItem> items)
         {

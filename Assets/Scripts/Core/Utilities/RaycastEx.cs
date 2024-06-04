@@ -16,7 +16,6 @@ namespace Core.Utilities
         /// </summary>
         /// <param name="targetObj">判定対象のオブジェクト</param>
         /// <param name="distance">判定距離</param>
-        /// <param name="layerMask">判定対象となるレイヤーのマスク</param>
         /// <returns>下方向に指定距離内に他のオブジェクトが存在するかどうか</returns>
         public static bool IsGroundBelow(this GameObject targetObj, float distance)
         {
@@ -27,7 +26,7 @@ namespace Core.Utilities
             var startPosition = targetObj.transform.position;
 
             // Raycastを実行
-            var isHit = Physics.Raycast(startPosition, direction, out var hit, distance);
+            var isHit = Physics.Raycast(startPosition, direction, out var _, distance);
 
             // Raycastが当たった場合は、地面が存在すると判定
             if (isHit)

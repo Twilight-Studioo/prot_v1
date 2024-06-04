@@ -61,12 +61,9 @@ namespace Core.Data
                 return JsonUtility.FromJson<T>(value);
             }
 
-            if (typeof(IDefaultable<T>).IsAssignableFrom(typeof(T)))
-            {
-                return ((IDefaultable<T>)Activator.CreateInstance(typeof(T))).DefaultInstance();
-            }
-
-            return new();
+            return typeof(IDefaultable<T>).IsAssignableFrom(typeof(T))
+                ? ((IDefaultable<T>)Activator.CreateInstance(typeof(T))).DefaultInstance()
+                : new();
         }
 
         public void Set<T>(T data) where T : IDefaultable<T>, new()
@@ -83,30 +80,25 @@ namespace Core.Data
             var data = Get<T>();
             var type = typeof(T);
             var field = type.GetField(fieldName);
-            if (field != null)
+            if (field == null)
             {
-                var keyValue = (KeyValue<string, TValue>)field.GetValue(data);
-                return keyValue.value;
+                throw new($"The type {type.Name} does not contain a field named {fieldName}.");
             }
 
-            throw new($"The type {type.Name} does not contain a field named {fieldName}.");
+            var keyValue = (KeyValue<string, TValue>)field.GetValue(data);
+            return keyValue.Value;
         }
 
         public static class ReflectionHelper
         {
             public static string GetFieldName<T>(Expression<Func<T, object>> selector)
             {
-                if (selector.Body is MemberExpression member)
+                return selector.Body switch
                 {
-                    return member.Member.Name;
-                }
-
-                if (selector.Body is UnaryExpression unary && unary.Operand is MemberExpression unaryMember)
-                {
-                    return unaryMember.Member.Name;
-                }
-
-                throw new ArgumentException("Not a property or field", nameof(selector));
+                    MemberExpression member => member.Member.Name,
+                    UnaryExpression { Operand: MemberExpression unaryMember, } => unaryMember.Member.Name,
+                    var _ => throw new ArgumentException("Not a property or field", nameof(selector)),
+                };
             }
         }
     }
@@ -114,18 +106,23 @@ namespace Core.Data
     [Serializable]
     public class KeyValue<TKey, TValue>
     {
-        public TValue value;
+        public readonly TValue Value;
+        private TKey key;
 
         public KeyValue(TKey key, TValue value)
         {
             Key = key;
-            this.value = value;
+            Value = value;
         }
 
-        public TKey Key { get; private set; }
+        public TKey Key
+        {
+            get => key;
+            private set => key = value;
+        }
     }
 
-    public interface IDefaultable<T>
+    public interface IDefaultable<out T>
     {
         T DefaultInstance();
     }
@@ -143,6 +140,11 @@ namespace Core.Data
 
         public SerializableDictionary(Dictionary<string, string> dict)
         {
+            if (dict == null)
+            {
+                return;
+            }
+
             foreach (var pair in dict)
             {
                 keys.Add(pair.Key);

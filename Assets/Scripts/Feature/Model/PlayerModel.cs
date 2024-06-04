@@ -16,7 +16,7 @@ namespace Feature.Model
     {
         private readonly CharacterParams characterParams;
 
-        public Vector2 Forward;
+        private Vector2 forward;
 
         [Inject]
         public PlayerModel(
@@ -62,7 +62,7 @@ namespace Feature.Model
                 return;
             }
 
-            Forward = forward.x > 0 ? Vector2.right : Vector2.left;
+            this.forward = forward.x > 0 ? Vector2.right : Vector2.left;
         }
 
         public int SetHealth(ushort health)
@@ -76,6 +76,6 @@ namespace Feature.Model
             Health.Value -= damage;
         }
 
-        public Vector2 AttachPoint() => Position.Value + Forward * 1.5f;
+        public Vector2 AttachPoint() => Position.Value + forward * 1.5f;
     }
 }

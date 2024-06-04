@@ -92,7 +92,13 @@ namespace Core.Utilities
 
         public static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> items, Func<T, TKey> keySelector)
         {
+            if (items == null)
+            {
+                yield break;
+            }
+
             var seenKeys = new HashSet<TKey>();
+
             foreach (var element in items)
             {
                 if (seenKeys.Add(keySelector(element)))
@@ -125,7 +131,13 @@ namespace Core.Utilities
 
         public static IEnumerable<T> DropWhile<T>(IEnumerable<T> source, Func<T, bool> predicate)
         {
+            if (source == null)
+            {
+                yield break;
+            }
+
             var yielding = false;
+
             foreach (var item in source)
             {
                 if (!yielding && !predicate(item))
@@ -205,6 +217,13 @@ namespace Core.Utilities
 
         public static void Deconstruct<T>(this IList<T> list, out T first, out IList<T> rest)
         {
+            if (list == null)
+            {
+                rest = new List<T>();
+                first = default;
+                return;
+            }
+
             first = list.Count > 0 ? list[0] : default;
             rest = (IList<T>)list.Skip(1).ToList();
         }
@@ -261,6 +280,11 @@ namespace Core.Utilities
 
         public static int FindIndex<T>(this IList<T> list, Func<T, bool> predicate)
         {
+            if (list == null)
+            {
+                return -1;
+            }
+
             for (var i = 0; i < list.Count; i++)
             {
                 if (predicate(list[i]))
@@ -274,6 +298,11 @@ namespace Core.Utilities
 
         public static int FindLastIndex<T>(this IList<T> list, Func<T, bool> predicate)
         {
+            if (list == null)
+            {
+                return -1;
+            }
+
             for (var i = list.Count - 1; i >= 0; i--)
             {
                 if (predicate(list[i]))
