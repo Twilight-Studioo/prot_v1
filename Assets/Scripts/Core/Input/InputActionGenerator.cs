@@ -18,8 +18,9 @@ namespace Core.Input
         private static readonly string SavePath = $"Assets/Scripts/Core/Input/Generated/{ClassName}.cs";
         private static readonly string ProfilePath = Application.dataPath + "/Resources";
         private static InputActionAssetProfile profileAsset;
-
+#if UNITY_EDITOR
         [InitializeOnLoadMethod]
+#endif
         private static void LoadProfile()
         {
             if (!Directory.Exists(ProfilePath))
@@ -36,13 +37,16 @@ namespace Core.Input
             }
         }
 
+#if UNITY_EDITOR
         [MenuItem("InputSystem/LoadManual")]
+#endif
         private static void LoadManual()
         {
             LoadProfile();
         }
-
+#if UNITY_EDITOR
         [MenuItem("InputSystem/GenerateActionName")]
+#endif
         private static void Generate()
         {
             if (profileAsset == null)
@@ -101,8 +105,9 @@ namespace Core.Input
                 var bytes = Encoding.UTF8.GetBytes(generatedCode);
                 stream.Write(bytes, 0, bytes.Length);
             }
-
+#if UNITY_EDITOR
             AssetDatabase.Refresh();
+#endif
         }
 
         private static void InsertComment(StringBuilder builder)

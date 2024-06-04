@@ -23,7 +23,9 @@ namespace Core.Utilities
         private const string SceneLoaderSavePath = "Assets/Scripts/Feature/Common/Scene/Generated/SceneLoader.cs";
         private static readonly string SavePath = "Assets/Scripts/Feature/Common/Scene/Generated/Scenes.cs";
 
+#if UNITY_EDITOR
         [MenuItem("Services/Create/SceneLoader")]
+#endif
         private static void Create()
         {
             CreateFeatures();
@@ -169,8 +171,9 @@ namespace Core.Utilities
                 var bytes = Encoding.UTF8.GetBytes(generatedCode);
                 stream.Write(bytes, 0, bytes.Length);
             }
-
+#if UNITY_EDITOR
             AssetDatabase.Refresh();
+#endif
         }
     }
 }
