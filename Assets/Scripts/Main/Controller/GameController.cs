@@ -7,6 +7,8 @@ using Feature.Presenter;
 using Feature.Repository;
 using Main.Input;
 using Main.Service;
+using UniRx;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -24,7 +26,9 @@ namespace Main.Controller
         private readonly GameState gameState;
         private readonly GameUIPresenter gameUIPresenter;
         private readonly IPlayerPresenter playerPresenter;
-        private readonly SwapController swapController;
+        private readonly RootInstance rootInstance;
+        private readonly ISwapController swapController;
+        private readonly SwapItemsPresenter swapItemsPresenter;
         private readonly UserRepository userRepository;
 
         [Inject]
@@ -36,7 +40,7 @@ namespace Main.Controller
             GameState gameState,
             SwapItemsPresenter swapItemsPresenter,
             GameUIPresenter gameUIPresenter,
-            SwapController swapController,
+            ISwapController swapController,
             EnemySpawnService enemySpawnService
         )
         {
@@ -52,6 +56,19 @@ namespace Main.Controller
         public void Start()
         {
             gameState.Initialize();
+            gameState.CurrentState
+                .DistinctUntilChanged()
+                .Subscribe(x =>
+                {
+                    if (x is GameState.State.Playing)
+                    {
+                        Cursor.visible = false;
+                    }
+                    else if (x is GameState.State.Paused or GameState.State.Finished)
+                    {
+                        Cursor.visible = true;
+                    }
+                });
             // input action start
             gameInputController.Start();
 

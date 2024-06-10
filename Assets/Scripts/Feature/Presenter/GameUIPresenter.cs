@@ -30,11 +30,10 @@ namespace Feature.Presenter
 
         public void Start()
         {
-            playerModel.Position
-                .DistinctUntilChanged()
-                .Subscribe(pos => { gameUIView.SetCameraPosition(new(pos.x, pos.y + 2, -10)); }
-                );
+            gameUIView.CameraPosition = playerModel.Position.DistinctUntilChanged().ToReactiveProperty();
             gameUIView.SetHealthRange(0, param.health);
+            
+            gameUIView.DoStart();
             playerModel.Health
                 .DistinctUntilChanged()
                 .Subscribe(x => { gameUIView.SetHealth(x); });

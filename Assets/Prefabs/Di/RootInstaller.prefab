@@ -49,6 +49,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  swapCursorParams: {fileID: 11400000, guid: b581db5680ac44803aa66c23eb857e87, type: 2}
   characterParams: {fileID: 11400000, guid: 6d59a429a794341dcbb522951a047caf, type: 2}
   enemy1Params: {fileID: 11400000, guid: dbadc2330ad014b07ac7eac43208c6e4, type: 2}
   enemy2Params: {fileID: 11400000, guid: bc511ef82762c475784ce5b4f41b2bff, type: 2}

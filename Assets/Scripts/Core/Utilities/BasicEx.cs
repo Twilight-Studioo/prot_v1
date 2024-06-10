@@ -46,9 +46,23 @@ namespace Core.Utilities
             return item.Equals(null);
         }
 
-        public static List<T> ToList<T>(this T value) where T: class => new() { value, };
-        
-        public static List<T> ToList<T>(this T[] value) where T: class => new(value);
+        public static List<T> ToList<T>(this T value) where T : class => new() { value, };
+
+        public static List<T> ToList<T>(this T[] value) where T : class => new(value);
+
+        public static Vector3 ToVector3(this Vector2 value, float z = 0f) => new(value.x, value.y, z);
+
+        public static Vector2 ToVector2(this Vector3 value) => new(value.x, value.y);
+
+        public static bool Empty<T>([CanBeNull] this List<T> value) => value == null || value.Count == 0;
+
+        public static bool IsInScreen(this Vector3 value)
+        {
+            var viewportPosition = Camera.main.WorldToViewportPoint(value);
+            return viewportPosition.x is >= 0 and <= 1 &&
+                   viewportPosition.y is >= 0 and <= 1 &&
+                   viewportPosition.z >= 0;
+        }
 
         public static T CoerceAtLeast<T>(T value, T min) where T : IComparable<T> =>
             value.CompareTo(min) < 0 ? min : value;

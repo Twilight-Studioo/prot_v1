@@ -14,7 +14,7 @@ using VContainer;
 
 namespace Main.Controller
 {
-    public class SwapController : IDisposable
+    public class SwapController : ISwapController, IDisposable
     {
         private readonly CharacterParams characterParams;
         private readonly GameState gameState;
@@ -22,6 +22,8 @@ namespace Main.Controller
         private readonly SwapItemsPresenter swapItemsPresenter;
 
         private readonly CompositeDisposable swapTimer;
+
+        private Vector2 before;
 
         [Inject]
         public SwapController(
@@ -99,9 +101,15 @@ namespace Main.Controller
             }
         }
 
-        public void Select(Vector2 direction)
+        public void Select(Vector2 direction, bool isMouse)
         {
+            if (!gameState.IsSwap() || before == direction)
+            {
+                return;
+            }
+
             swapItemsPresenter.MoveSelector(direction, playerPresenter.GetPosition());
+            before = direction;
         }
 
         private void DoSwap()

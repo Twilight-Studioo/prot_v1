@@ -21,6 +21,7 @@ namespace Core.Utilities
                 public static readonly ZIndex Character = new(-0.5f);
                 public static readonly ZIndex MainCharacter = new(-0.51f);
                 public static readonly ZIndex Foreground = new(-0.8f);
+                public static readonly ZIndex Camera = new(-10.0f);
 
                 private ZIndex(float index)
                 {

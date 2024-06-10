@@ -21,15 +21,16 @@ namespace Main.Installer
         {
             builder.RegisterComponentInHierarchy<PlayerView>();
             builder.Register<PlayerModel>(Lifetime.Scoped);
-            builder.Register<IPlayerPresenter, PlayerPresenter>(Lifetime.Scoped)
-                .WithParameter("playerView", resolver => resolver.Resolve<PlayerView>())
-                .WithParameter("playerModel", resolver => resolver.Resolve<PlayerModel>());
+            builder.Register<IPlayerPresenter, PlayerPresenter>(Lifetime.Scoped);
 
             // TODO: 初期処理の挙動次第でcontrollerからinitするかEntryPointでinitするか変える
             builder.Register<SwapItemsModel>(Lifetime.Scoped);
             builder.Register<SwapItemsPresenter>(Lifetime.Scoped);
 
-            builder.Register<SwapController>(Lifetime.Scoped);
+            builder.RegisterComponentInHierarchy<SwapCursorView>();
+            builder.Register<SwapCursorModel>(Lifetime.Scoped);
+            builder.Register<SwapCursorPresenter>(Lifetime.Scoped);
+            builder.Register<ISwapController, SwapCursorController>(Lifetime.Scoped);
 
             builder.Register<GameState>(Lifetime.Scoped);
             builder.Register<GameInputController>(Lifetime.Scoped);

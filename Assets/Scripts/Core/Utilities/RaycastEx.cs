@@ -10,8 +10,6 @@ namespace Core.Utilities
 {
     public static class RaycastEx
     {
-        private static Vector2 lastOrigin;
-        private static float lastPointSize;
 
         /// <summary>
         ///     指定オブジェクトの下方向に指定距離内に他のオブジェクトが存在するかどうかを判定します。
@@ -52,12 +50,11 @@ namespace Core.Utilities
                 result.Clear(); // Clear the list to remove any old data
             }
 
-            lastOrigin = origin;
-            lastPointSize = pointSize;
             // Find all colliders at the specified position within the given radius
-            var colliders = Physics2D.OverlapCircleAll(origin, pointSize);
+            var colliders = new Collider2D[10];
+            var size = Physics2D.OverlapCircleNonAlloc(origin, pointSize, colliders);
 
-            if (colliders.Length == 0)
+            if (size == 0)
             {
                 return false;
             }
@@ -66,12 +63,6 @@ namespace Core.Utilities
             result.AddRange(colliders.Where(collider => collider != null).Select(collider => collider.gameObject));
 
             return true;
-        }
-
-        public static void DrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(lastOrigin, lastPointSize);
         }
     }
 }

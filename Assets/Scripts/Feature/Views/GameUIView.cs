@@ -1,6 +1,7 @@
 #region
 
 using Core.Utilities;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,8 @@ namespace Feature.Views
         [SerializeField] private Camera mainCamera;
         [SerializeField] private Slider healthSlider;
 
-        private void Start()
+        public IReadOnlyReactiveProperty<Vector2> CameraPosition;
+        public void DoStart()
         {
             if (mainCamera.IsNull() || healthSlider.IsNull())
             {
@@ -34,9 +36,12 @@ namespace Feature.Views
             healthSlider.value = x;
         }
 
-        public void SetCameraPosition(Vector3 position)
+        private void FixedUpdate()
         {
-            mainCamera.transform.position = position;
+            if (!CameraPosition.IsNull())
+            {
+                mainCamera.transform.position = Vector2.Lerp(mainCamera.transform.position.ToVector2(), CameraPosition.Value, Time.deltaTime).ToVector3(SysEx.Unity.ZIndex.Camera);
+            }
         }
     }
 }

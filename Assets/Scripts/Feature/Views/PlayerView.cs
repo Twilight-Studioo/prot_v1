@@ -1,7 +1,6 @@
 #region
 
 using System;
-using Core.Utilities;
 using UniRx;
 using UnityEngine;
 
@@ -69,12 +68,6 @@ namespace Feature.Views
         private void OnCollisionEnter2D(Collision2D other)
         {
             OnHit?.Invoke(other.collider);
-        }
-
-        private void OnDrawGizmos()
-        {
-            // Gizmos 用の描画を呼び出す
-            RaycastEx.DrawGizmos();
         }
 
         /// <summary>
